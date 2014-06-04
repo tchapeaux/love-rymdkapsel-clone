@@ -1,0 +1,25 @@
+love.conf = function(t)
+  t.title = "Rymdkapslov"
+  t.icon = "res/logo/blanklogo.png"
+  t.author = "Altom"
+  t.url = nil
+  t.identity = "blank"
+  t.version = "0.9.1"
+  t.console = false
+  t.release = false
+  t.window.width = 800
+  t.window.height = 600
+  t.window.fullscreen = false
+  t.window.vsync = true
+  t.window.fsaa = 0
+  t.modules.joystick = false
+  t.modules.audio = true
+  t.modules.keyboard = true
+  t.modules.event = true
+  t.modules.image = true
+  t.modules.graphics = true
+  t.modules.timer = true
+  t.modules.mouse = true
+  t.modules.sound = true
+  t.modules.physics = false
+end

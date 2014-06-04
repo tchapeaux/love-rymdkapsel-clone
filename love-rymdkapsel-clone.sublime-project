@@ -1,0 +1,22 @@
+{
+    "build_systems":
+    [
+        {
+            "name": "lovemoon",
+            "selector": ["source.moon"],
+            "file_regex": "^(?:Error: )?\\s*\\[?([\\w/.]*?):([0-9]*):?([0-9]*)",
+            "shell_cmd": "bash love-sublime-build.sh",
+            "working_dir": "$project_path"
+        }
+    ],
+    "folders":
+    [
+        {
+            "follow_symlinks": true,
+            "name": "rymdkapslov",
+            "path": "./"
+            // "file_exclude_patterns": [""],
+            // "folder_exclude_patterns": [""]
+        }
+    ]
+}
