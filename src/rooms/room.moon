@@ -3,10 +3,16 @@ export ^
 require "tile"
 
 class Room
-    new: (@shape, @origin, @orientation)=>
+    new: (@shape, @origin, @leftTurns)=>
+        -- parameters:
+        -- - @shape: a Shape
+        -- - @origin: point (0,0) for @shape
+        -- - @leftTurns: number of left turns to apply to the shape
         @tiles = {}
         @x = origin[1]
         @y = origin[2]
+        for i=1,@leftTurns
+            @shape = turnShapeLeft(@shape)
         for {ox, oy} in *@shape
             tile = Tile(@x + ox, @y + oy, @)
             table.insert(@tiles, tile)

@@ -22,7 +22,7 @@ love.update = (dt) ->
 
 love.keyreleased = (key) ->
     switch(key)
-        when "up", "down", "left", "right", "i", "o"
+        when "p"
             view\keyreleased(key)
         when "escape"
             love.event.quit()

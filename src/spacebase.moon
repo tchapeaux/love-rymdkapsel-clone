@@ -3,9 +3,10 @@ export ^
 require "tile"
 require "shape"
 require "rooms/rock"
+require "rooms/corridor"
 
 class Spacebase
-    kBASE_SIZE: 100  -- in tile²
+    kBASE_SIZE: 20  -- in tile²
     totalSize: ->
         return Spacebase.kBASE_SIZE * Tile.kTILE_SIZE
 
@@ -16,8 +17,10 @@ class Spacebase
             for j=1, @kBASE_SIZE
                 table.insert(@tileGrid[i], nil)
         @rooms = {}
-        firstRoom = Rock(randomShape(), {10, 10}, nil)
-        @addRoom(firstRoom)
+        @addRoom(Rock(oneTileShape, {@kBASE_SIZE / 2 - 1, @kBASE_SIZE/2}, 0))
+        @addRoom(Rock(oneTileShape, {@kBASE_SIZE / 2 + 1, @kBASE_SIZE/2}, 0))
+        @addRoom(Rock(oneTileShape, {@kBASE_SIZE / 2, @kBASE_SIZE/2 - 1}, 0))
+        @addRoom(Corridor(tShape, {@kBASE_SIZE / 2, @kBASE_SIZE/2}, 1))
 
     draw: =>
         for room in *@rooms
@@ -29,6 +32,7 @@ class Spacebase
             love.graphics.pop()
         tileSize = Tile.kTILE_SIZE
         totalSize = Spacebase.totalSize()
+        love.graphics.setColor(255,255,255)
         for i=1,@kBASE_SIZE + 1
             i -= 1 -- begins at 0
             love.graphics.line(0, i * tileSize, totalSize, i * tileSize)
@@ -47,7 +51,7 @@ class Spacebase
 
     mousepressed: (x, y, button) =>
         {i, j} = @screenToTileCoordinates(x, y)
-        room = Rock(randomShape(), {i, j}, nil)
+        room = Rock(randomShape(), {i, j}, 1)
         @addRoom(room)
 
     updateNeighbors: =>

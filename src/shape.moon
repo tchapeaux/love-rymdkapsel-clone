@@ -61,3 +61,10 @@ randomShape = ->
         oneTileShape, iShape, oShape, tShape, jShape, lShape, sShape, zShape
     }
     return shapes[math.random(#shapes)]
+
+turnShapeLeft = (shape) ->
+    newShape = {}
+    for {x, y} in *shape
+        newX, newY = -y, x
+        table.insert(newShape, {newX, newY})
+    return newShape
