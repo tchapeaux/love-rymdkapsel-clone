@@ -11,14 +11,14 @@ class View
         @zoom = 1
 
         @offset_speed = 500  -- px/s
-        @zoom_rate = 0.5
+        @zoom_rate = 0.7
         @max_offset = spacebaseSize
         @min_offset = 0
         @max_zoom = 2
         @min_zoom = .5
 
         @starField = {}
-        number_of_stars = 1000
+        number_of_stars = 200
         for i=1,number_of_stars
             table.insert(@starField, Star())
 
@@ -45,23 +45,13 @@ class View
     draw: =>
         @draw_starfield()
         @draw_spacebase()
-        -- @draw_ui()
 
     draw_starfield: =>
-        love.graphics.setColor(0,0,0)
+        spaceColor = {14, 17, 23}
+        love.graphics.setColor(spaceColor)
         love.graphics.rectangle("fill", 0, 0, wScr(), hScr())
         for star in *@starField
             star\draw(@offset_center_x, @offset_center_y)
-
-    draw_ui: =>
-        love.graphics.origin()
-        love.graphics.setColor(0,0,0)
-        love.graphics.rectangle("fill", 0, 0, wScr(), hScr() / 20)
-        love.graphics.rectangle("fill", 0, 19 * hScr() / 20, wScr(), hScr() / 20)
-        love.graphics.setColor(255,255,255)
-        love.graphics.line(0, hScr() / 20, wScr(), hScr() / 20)
-        love.graphics.line(0, 19 * hScr() / 20, wScr(), 19 * hScr() / 20)
-        -- TODO
 
     draw_spacebase: =>
         w, h = wScr(), hScr()
@@ -76,19 +66,15 @@ class View
         -- love.graphics.scale(1, 0.5)
         -- love.graphics.rotate(math.pi/4)
         -- love.graphics.circle("fill", 0, 0, 10)
+        love.graphics.setColor(255, 255, 255)
         love.graphics.draw(@canvas)
 
 
     keyreleased: (key) =>
-        switch(key)
-            when("p")
-                print(@offset_center_x, @offset_center_y, @spacebase\totalSize())
 
     coordinatesInWorld: (x, y) =>
-        print(x,y)
         x /= @zoom
         y /= @zoom
         x -= @offset_center_x + wScr() / (2 * @zoom)
         y -= @offset_center_y + hScr() / (2 * @zoom)
-        print(x,y)
         return {x, y}

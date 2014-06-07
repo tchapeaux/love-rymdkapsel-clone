@@ -1,9 +1,7 @@
-export *
-
 -- shapes description
 -- each shape is an array of 4 coordinates (x,y), which are offset from the shape origin
 
-oneTileShape = {
+dotShape = {
     {0, 0}
 }
 
@@ -58,7 +56,7 @@ zShape = {
 
 randomShape = ->
     shapes = {
-        oneTileShape, iShape, oShape, tShape, jShape, lShape, sShape, zShape
+        dotShape, iShape, oShape, tShape, jShape, lShape, sShape, zShape
     }
     return shapes[math.random(#shapes)]
 
@@ -68,3 +66,16 @@ turnShapeLeft = (shape) ->
         newX, newY = -y, x
         table.insert(newShape, {newX, newY})
     return newShape
+
+{
+    dot: dotShape
+    i: iShape
+    o: oShape
+    t: tShape
+    j: jShape
+    l: lShape
+    s: sShape
+    z: zShape
+    random: randomShape
+    turnLeft: turnShapeLeft
+}
