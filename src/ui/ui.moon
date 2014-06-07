@@ -64,7 +64,8 @@ class UI
 
     turnSelectedRoom: =>
         @currentLeftTurns += 1
-        @spacebase.floatingRoom = @selectedRoom
+        @currentLeftTurns %= 4
+        @spacebase.floatingRoom = @selectedRoom()
 
     placeRoom: =>
         @spacebase\placeFloatingRoom()
@@ -81,5 +82,5 @@ class UI
                     if butt\isInside(x, y)
                         @selectNewRoomType(i)
             when "r"
-                roomLeftTurn()
+                @turnSelectedRoom()
 
