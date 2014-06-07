@@ -46,6 +46,19 @@ class Spacebase
             @drawRoom(room)
         if @floatingRoom
             @drawRoom(@floatingRoom)
+        -- debug: see neighbors
+        love.graphics.setLineWidth(2)
+        love.graphics.setColor({50,50,50})
+        neighbors = {Tile.kRIGHT, Tile.kLEFT, Tile.kUP, Tile.kDOWN}
+        for i=1,@kBASE_SIZE
+            for j=1,@kBASE_SIZE
+                for n in *neighbors
+                    if @tileGrid[i][j] and @tileGrid[i][j].neighbors[n]
+                        neigh = @tileGrid[i][j].neighbors[n]
+                        {x1, y1} = @tileCenterCoordinates(i, j)
+                        {x2, y2} = @tileCenterCoordinates(neigh.x, neigh.y)
+                        love.graphics.line(x1, y1, x2, y2)
+
 
     drawRoom: (room) =>
             i = room.x - 1
@@ -73,10 +86,10 @@ class Spacebase
         j = math.ceil(y / Tile.kTILE_SIZE)
         return {i, j}
 
-    mousepressed: (x, y, button) =>
-        {i, j} = @screenToTileCoordinates(x, y)
-        room = Rock(shapes.random(), {i, j}, 1)
-        @addRoom(room)
+    tileCenterCoordinates: (i, j) =>
+        x = (i - 1) * Tile.kTILE_SIZE + 0.5 * Tile.kTILE_SIZE
+        y = (j - 1) * Tile.kTILE_SIZE + 0.5 * Tile.kTILE_SIZE
+        return {x, y}
 
     updateNeighbors: =>
         for i=1,@kBASE_SIZE
