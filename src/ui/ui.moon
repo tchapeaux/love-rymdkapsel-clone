@@ -72,7 +72,6 @@ class UI
         @selectedRoomType = nil
         @updateShapes()
 
-
     mousepressed: (x, y, button) =>
         switch button
             when "l"

@@ -26,10 +26,11 @@ class Spacebase
         @addRoom(Rock(shapes.dot, {@kBASE_SIZE / 2, @kBASE_SIZE/2 - 1}, 0, true))
         @addRoom(Corridor(shapes.t, {@kBASE_SIZE / 2, @kBASE_SIZE/2}, 1, true))
 
+        @crew = {}
+
     update: (dt) =>
         if @floatingRoom
             mx, my = @mousePosition[1], @mousePosition[2]
-            -- world position
             {wx, wy} = @screenToTileCoordinates(mx, my)
             @floatingRoom\updatePosition(wx, wy)
 
@@ -70,6 +71,7 @@ class Spacebase
 
     placeFloatingRoom: =>
         -- TODO: assert that floating room is valid
+        assert(@floatingRoom)
         @floatingRoom\finalize()
         @addRoom(@floatingRoom)
         @floatingRoom = nil
