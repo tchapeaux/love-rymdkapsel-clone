@@ -9,7 +9,7 @@ class SpacebaseView
     new: (@spacebase) =>
         @size = @spacebase.totalSize()
         @canvas = love.graphics.newCanvas(@size, @size)
-        @cam = gamera.new(-@size/3, -@size/3, 5/3 * @size, 5/3 * @size)
+        @cam = gamera.new(-@size/2, -@size/2, 2 * @size, 2 * @size)
         @cam\setPosition(@size/2, @size/2)
         @cam\setAngle(math.pi/4)
 
@@ -47,17 +47,17 @@ class SpacebaseView
             @cam\setAngle(cam_angle + @rotationspeed * dt)
 
     draw: =>
-        @draw_starfield()
+        @\draw_starfield()
         love.graphics.scale(1, 0.5)
         @cam\draw(@spacebase\draw)
 
     draw_starfield: =>
         spaceColor = {14, 17, 23}
-        cam_x, cam_y = @cam\getPosition()
+        w_x, w_y = @cam\toScreen(0, 0)
         love.graphics.setColor(spaceColor)
         love.graphics.rectangle("fill", 0, 0, wScr(), hScr())
         for star in *@starField
-            star\draw(cam_x, cam_y)
+            star\draw(w_x, w_y)
 
     -- draw_spacebase: =>
     --     w, h = wScr(), hScr()
