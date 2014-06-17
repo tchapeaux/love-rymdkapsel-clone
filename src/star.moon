@@ -2,7 +2,6 @@ export ^
 
 class Star
     new: =>
-        -- TODO: weighted repartition (more natural)
         @x = love.math.randomNormal(wScr() / 4, wScr() / 2)
         @y = love.math.randomNormal(hScr() / 3, -@x)
         @parallaxFactor = love.math.randomNormal(0.5, 0.5) / 20
