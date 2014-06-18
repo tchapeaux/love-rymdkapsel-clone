@@ -20,11 +20,25 @@ class Spacebase
         @mousePosition = {0, 0} -- updated by external class
         @floatingRoom = nil
 
-        -- build the first room
-        @addRoom(Rock(shapes.dot, {@kBASE_SIZE / 2 - 1, @kBASE_SIZE/2}, 0, true))
-        @addRoom(Rock(shapes.dot, {@kBASE_SIZE / 2 + 1, @kBASE_SIZE/2}, 0, true))
-        @addRoom(Rock(shapes.dot, {@kBASE_SIZE / 2, @kBASE_SIZE/2 - 1}, 0, true))
-        @addRoom(Corridor(shapes.t, {@kBASE_SIZE / 2, @kBASE_SIZE/2}, 1, true))
+        -- build the first rooms
+        startupRooms = {}
+        temp_room = Rock(shapes.dot, {@kBASE_SIZE / 2 - 1, @kBASE_SIZE/2}, 0)
+        temp_room\confirm()
+        table.insert(startupRooms, temp_room)
+        temp_room = Rock(shapes.dot, {@kBASE_SIZE / 2 + 1, @kBASE_SIZE/2}, 0)
+        temp_room\confirm()
+        temp_room\build(true)
+        table.insert(startupRooms, temp_room)
+        temp_room = Rock(shapes.dot, {@kBASE_SIZE / 2, @kBASE_SIZE/2 - 1}, 0)
+        temp_room\confirm()
+        temp_room\build(true)
+        table.insert(startupRooms, temp_room)
+        temp_room = Corridor(shapes.t, {@kBASE_SIZE / 2, @kBASE_SIZE/2}, 1)
+        temp_room\confirm()
+        temp_room\build(true)
+        table.insert(startupRooms, temp_room)
+        for room in *startupRooms
+            @addRoom(room)
 
         @crew = {}
 
@@ -72,7 +86,7 @@ class Spacebase
     placeFloatingRoom: =>
         -- TODO: assert that floating room is valid
         assert(@floatingRoom)
-        @floatingRoom\finalize()
+        @floatingRoom\confirm()
         @addRoom(@floatingRoom)
         @floatingRoom = nil
 
