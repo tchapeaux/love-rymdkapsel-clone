@@ -24,6 +24,7 @@ class Spacebase
         startupRooms = {}
         temp_room = Rock(shapes.dot, {@kBASE_SIZE / 2 - 1, @kBASE_SIZE/2}, 0)
         temp_room\confirm()
+        temp_room\build(true)
         table.insert(startupRooms, temp_room)
         temp_room = Rock(shapes.dot, {@kBASE_SIZE / 2 + 1, @kBASE_SIZE/2}, 0)
         temp_room\confirm()
@@ -62,17 +63,18 @@ class Spacebase
         if @floatingRoom
             @drawRoom(@floatingRoom)
         -- debug: see neighbors
-        love.graphics.setLineWidth(2)
-        love.graphics.setColor({50,50,50})
-        neighbors = {Tile.kRIGHT, Tile.kLEFT, Tile.kUP, Tile.kDOWN}
-        for i=1,@kBASE_SIZE
-            for j=1,@kBASE_SIZE
-                for n in *neighbors
-                    if @tileGrid[i][j] and @tileGrid[i][j].neighbors[n]
-                        neigh = @tileGrid[i][j].neighbors[n]
-                        {x1, y1} = @tileCenterCoordinates(i, j)
-                        {x2, y2} = @tileCenterCoordinates(neigh.x, neigh.y)
-                        love.graphics.line(x1, y1, x2, y2)
+        if false
+            love.graphics.setLineWidth(2)
+            love.graphics.setColor({50,50,50})
+            neighbors = {Tile.kRIGHT, Tile.kLEFT, Tile.kUP, Tile.kDOWN}
+            for i=1,@kBASE_SIZE
+                for j=1,@kBASE_SIZE
+                    for n in *neighbors
+                        if @tileGrid[i][j] and @tileGrid[i][j].neighbors[n]
+                            neigh = @tileGrid[i][j].neighbors[n]
+                            {x1, y1} = @tileCenterCoordinates(i, j)
+                            {x2, y2} = @tileCenterCoordinates(neigh.x, neigh.y)
+                            love.graphics.line(x1, y1, x2, y2)
 
 
     drawRoom: (room) =>
