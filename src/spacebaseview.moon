@@ -3,8 +3,6 @@ export ^
 require "star"
 gamera = require "lib/gamera/gamera"
 
-export cos, sin = math.cos, math.sin
-
 class SpacebaseView
     new: (@spacebase) =>
         @size = @spacebase.totalSize()
@@ -27,17 +25,17 @@ class SpacebaseView
         cam_zoom = @cam\getScale()
         cam_angle = @cam\getAngle()
         if love.keyboard.isDown("down")
-            cam_x -= @offset_speed * dt * sin(cam_angle)
-            cam_y += @offset_speed * dt * cos(cam_angle)
+            cam_x -= @offset_speed * dt * math.sin(cam_angle)
+            cam_y += @offset_speed * dt * math.cos(cam_angle)
         if love.keyboard.isDown("up")
-            cam_x += @offset_speed * dt * sin(cam_angle)
-            cam_y -= @offset_speed * dt * cos(cam_angle)
+            cam_x += @offset_speed * dt * math.sin(cam_angle)
+            cam_y -= @offset_speed * dt * math.cos(cam_angle)
         if love.keyboard.isDown("right")
-            cam_x += @offset_speed * dt * cos(cam_angle)
-            cam_y += @offset_speed * dt * sin(cam_angle)
+            cam_x += @offset_speed * dt * math.cos(cam_angle)
+            cam_y += @offset_speed * dt * math.sin(cam_angle)
         if love.keyboard.isDown("left")
-            cam_x -= @offset_speed * dt * cos(cam_angle)
-            cam_y -= @offset_speed * dt * sin(cam_angle)
+            cam_x -= @offset_speed * dt * math.cos(cam_angle)
+            cam_y -= @offset_speed * dt * math.sin(cam_angle)
         @cam\setPosition(cam_x, cam_y)
         if love.keyboard.isDown("i")
             @cam\setScale(cam_zoom + cam_zoom * @zoom_rate * dt)
