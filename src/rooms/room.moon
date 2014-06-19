@@ -33,15 +33,15 @@ class Room
         assert @leftTurns <= 3
         for i=1,@leftTurns
             @shape = shapes.turnLeft(@shape)
-        @x = origin[1]
-        @y = origin[2]
+        @row = origin[1]
+        @col = origin[2]
         -- fill up the tile vector
         @tiles = {}
         @constructTiles()
 
     constructTiles: =>
-        for {ox, oy} in *@shape
-            tile = Tile(@x + ox, @y + oy, @)
+        for {offset_row, offset_col} in *@shape
+            tile = Tile(@row + offset_row, @col + offset_col, @)
             table.insert(@tiles, tile)
 
     draw: =>
@@ -51,25 +51,25 @@ class Room
         h = Tile.kTILE_SIZE
         m = Tile.kTILE_SIZE / 10 -- margin
         for tile in *@tiles
-            ox = tile.x - @x
-            oy = tile.y - @y
-            x = ox * Tile.kTILE_SIZE
-            y = oy * Tile.kTILE_SIZE
+            offset_row = tile.row - @row
+            offset_col = tile.col - @col
+            x = offset_row * Tile.kTILE_SIZE
+            y = offset_col * Tile.kTILE_SIZE
             love.graphics.setLineWidth(5)
             love.graphics.setColor(@color)
             love.graphics.rectangle(fillage, x + m, y + m, w - 2 * m, h - 2 * m)
             if outline
                 love.graphics.setColor(255, 255, 255, 100)
                 love.graphics.rectangle("line", x, y, w, h)
-            if tile.itemContained
-                love.graphics.push()
-                love.graphics.translate(w / 2, h / 2)
-                tile.itemContained\draw()
-                love.graphics.pop()
+            -- if tile.itemContained
+            --     love.graphics.push()
+            --     love.graphics.translate(w / 2, h / 2)
+            --     tile.itemContained\draw()
+            --     love.graphics.pop()
 
-    updatePosition: (newX, newY) =>
-        @x = newX
-        @y = newY
+    updatePosition: (newRow, newCol) =>
+        @row = newRow
+        @col = newCol
         @tiles = {}
         @constructTiles()
 
@@ -83,6 +83,14 @@ class Room
         for res in *{Energy, Material, Food}
             ok and= @required_resources[res] == @current_resources[res]
         return ok
+
+    getItems: =>
+        items = {}
+        for tile in *@tiles
+            if tile.itemContained
+                table.insert(items, tile.itemContained)
+        return items
+
 
     build: (force=false) =>
         assert @state == @states.construction

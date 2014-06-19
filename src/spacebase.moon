@@ -46,7 +46,7 @@ class Spacebase
     update: (dt) =>
         if @floatingRoom
             mx, my = @mousePosition[1], @mousePosition[2]
-            {wx, wy} = @screenToTileCoordinates(mx, my)
+            {wx, wy} = @worldToTile(mx, my)
             @floatingRoom\updatePosition(wx, wy)
 
     draw: =>
@@ -78,8 +78,8 @@ class Spacebase
 
 
     drawRoom: (room) =>
-            i = room.x - 1
-            j = room.y - 1
+            i = room.row - 1
+            j = room.col - 1
             love.graphics.push()
             love.graphics.translate(i * Tile.kTILE_SIZE, j * Tile.kTILE_SIZE)
             room\draw()
@@ -96,18 +96,31 @@ class Spacebase
     addRoom: (room) =>
         table.insert(@rooms, room)
         for tile in *room.tiles
-            @tileGrid[tile.x][tile.y] = tile
+            @tileGrid[tile.row][tile.col] = tile
         @updateNeighbors()
 
-    screenToTileCoordinates: (x, y) =>
+    worldToTile: (x, y) =>
         i = math.ceil(x / Tile.kTILE_SIZE)
         j = math.ceil(y / Tile.kTILE_SIZE)
         return {i, j}
 
-    tileCenterCoordinates: (i, j) =>
+    tileToWorld: (i, j) =>
         x = (i - 1) * Tile.kTILE_SIZE + 0.5 * Tile.kTILE_SIZE
         y = (j - 1) * Tile.kTILE_SIZE + 0.5 * Tile.kTILE_SIZE
         return {x, y}
+
+    getItems: (fromCrew=true, fromRooms=true) =>
+        items = {}
+        if fromCrew
+            for minion in *@crew
+                item = minion\getItem()
+                if item
+                    table.insert(items, item)
+        if fromRooms
+            for room in *@rooms
+                for item in *room\getItems()
+                    table.insert(items, item)
+        return items
 
     updateNeighbors: =>
         for i=1,@kBASE_SIZE

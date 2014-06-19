@@ -47,7 +47,30 @@ class SpacebaseView
     draw: =>
         @\draw_starfield()
         love.graphics.scale(1, 0.5)
+        -- draw spacebase (rotated)
         @cam\draw(@spacebase\draw)
+        -- draw entities (minions and items) (not rotated)
+        for minion in *@spacebase.crew
+            sx, sy = @cam\toScreen(minion.x, minion.y)
+            love.graphics.push()
+            scale = @cam\getScale()
+            love.graphics.scale(scale, scale)
+            love.graphics.translate(sx / scale, sy / scale)
+            minion\draw()
+            love.graphics.pop()
+
+        for room in *@spacebase.rooms
+            for tile in *room.tiles
+                item = tile.itemContained
+                if item
+                    {wx, wy} = @spacebase\tileToWorld(tile.row, tile.col)
+                    sx, sy = @cam\toScreen(wx, wy)
+                    love.graphics.push()
+                    scale = @cam\getScale()
+                    love.graphics.scale(scale, scale)
+                    love.graphics.translate(sx / scale, sy / scale)
+                    item\draw()
+                    love.graphics.pop()
 
     draw_starfield: =>
         spaceColor = {14, 17, 23}
