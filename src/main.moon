@@ -7,6 +7,8 @@ hScr = love.graphics.getHeight
 require "game"
 export flux = require "lib/flux/flux"
 
+export kDEBUG = false
+
 love.load = ->
     assert love.graphics.isSupported("canvas", "npot"), "Your graphic card is not supported, sorry!"
     export game = Game()
