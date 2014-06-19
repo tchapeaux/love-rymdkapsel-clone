@@ -43,6 +43,7 @@ class Spacebase
         temp_room = Reactor(shapes.t, {@kBASE_SIZE / 2 - 1, @kBASE_SIZE/2 + 3}, 1)
         temp_room\confirm()
         temp_room\build(true)
+        table.insert(startupRooms, temp_room)
         temp_room = Extractor(shapes.o, {@kBASE_SIZE / 2 + 2, @kBASE_SIZE/2 + 2}, 0)
         temp_room\confirm()
         temp_room\build(true)

@@ -1,8 +1,6 @@
 export ^
 
-require "tile"
 require "items"
-require "rooms/room"
 require "rooms/abstract_producer"
 
 class Extractor extends Producer

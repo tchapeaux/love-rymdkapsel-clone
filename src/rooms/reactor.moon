@@ -1,10 +1,9 @@
 export ^
 
-require "tile"
-require "rooms/room"
+require "items"
 require "rooms/abstract_producer"
 
-class Reactor extends Room
+class Reactor extends Producer
     color: {78, 169, 160}
     name: "reactor"
     required_resources: {
@@ -13,6 +12,7 @@ class Reactor extends Room
         [Food]: 0
     }
     productionRate: 2 -- seconds (should be 30)
+    producedResource: Energy
 
     new: (@shape, origin, @leftTurns)=>
         super(@shape, origin, @leftTurns)
