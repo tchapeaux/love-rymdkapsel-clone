@@ -46,12 +46,14 @@ class SpacebaseView
 
     draw: =>
         @\draw_starfield()
-        love.graphics.scale(1, 0.5)
-        -- draw spacebase (rotated)
+        love.graphics.scale(1, 0.5) -- fake-isometric squish
+        -- draw spacebase (rotated and squished)
         @cam\draw(@spacebase\draw)
-        -- draw entities (minions and items) (not rotated)
+        -- draw entities (minions and items) (un-rotated and un-squished)
+        love.graphics.scale(1, 2)
         for minion in *@spacebase.crew
             sx, sy = @cam\toScreen(minion.x, minion.y)
+            sy /= 2 -- account for squishiness
             love.graphics.push()
             scale = @cam\getScale()
             love.graphics.scale(scale, scale)
@@ -65,6 +67,7 @@ class SpacebaseView
                 if item
                     {wx, wy} = @spacebase\tileToWorld(tile.row, tile.col)
                     sx, sy = @cam\toScreen(wx, wy)
+                    sy /= 2 -- account for squishiness
                     love.graphics.push()
                     scale = @cam\getScale()
                     love.graphics.scale(scale, scale)
