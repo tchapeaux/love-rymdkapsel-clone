@@ -3,6 +3,8 @@ export ^
 require "tile"
 require "rooms/rock"
 require "rooms/corridor"
+require "rooms/reactor"
+require "rooms/extractor"
 shapes = require "rooms/shape"
 
 class Spacebase
@@ -38,6 +40,13 @@ class Spacebase
         temp_room\confirm()
         temp_room\build(true)
         table.insert(startupRooms, temp_room)
+        temp_room = Reactor(shapes.t, {@kBASE_SIZE / 2 - 1, @kBASE_SIZE/2 + 3}, 1)
+        temp_room\confirm()
+        temp_room\build(true)
+        temp_room = Extractor(shapes.o, {@kBASE_SIZE / 2 + 2, @kBASE_SIZE/2 + 2}, 0)
+        temp_room\confirm()
+        temp_room\build(true)
+        table.insert(startupRooms, temp_room)
         for room in *startupRooms
             @addRoom(room)
 
@@ -48,6 +57,8 @@ class Spacebase
             mx, my = @mousePosition[1], @mousePosition[2]
             {wx, wy} = @worldToTile(mx, my)
             @floatingRoom\updatePosition(wx, wy)
+        for room in *@rooms
+            room\update(dt)
 
     draw: =>
         tileSize = Tile.kTILE_SIZE
