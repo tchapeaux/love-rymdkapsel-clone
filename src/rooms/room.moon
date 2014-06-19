@@ -44,6 +44,8 @@ class Room
             tile = Tile(@row + offset_row, @col + offset_col, @)
             table.insert(@tiles, tile)
 
+    update: (dt) =>
+
     draw: =>
         outline = @state == @states.floating
         fillage = if @state == @states.finished then "fill" else "line"
@@ -61,11 +63,6 @@ class Room
             if outline
                 love.graphics.setColor(255, 255, 255, 100)
                 love.graphics.rectangle("line", x, y, w, h)
-            -- if tile.itemContained
-            --     love.graphics.push()
-            --     love.graphics.translate(w / 2, h / 2)
-            --     tile.itemContained\draw()
-            --     love.graphics.pop()
 
     updatePosition: (newRow, newCol) =>
         @row = newRow

@@ -10,4 +10,4 @@ class Tile
     kDOWN: 4
     new: (@row, @col, @room) =>
         @neighbors = {nil, nil, nil, nil}
-        @itemContained = Energy()
+        @itemContained = nil
