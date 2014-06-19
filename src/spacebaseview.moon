@@ -10,6 +10,7 @@ class SpacebaseView
         @cam = gamera.new(-@size/2, -@size/2, 2 * @size, 2 * @size)
         @cam\setPosition(@size/2, @size/2)
         @cam\setAngle(math.pi/4)
+        @squishFactor = 2 -- fake isometric thing
 
         @offset_speed = 500  -- px/s
         @zoom_rate = 0.7
@@ -46,14 +47,14 @@ class SpacebaseView
 
     draw: =>
         @\draw_starfield()
-        love.graphics.scale(1, 0.5) -- fake-isometric squish
+        love.graphics.scale(1, 1 / @squishFactor)
         -- draw spacebase (rotated and squished)
         @cam\draw(@spacebase\draw)
         -- draw entities (minions and items) (un-rotated and un-squished)
-        love.graphics.scale(1, 2)
+        love.graphics.scale(1, @squishFactor)
         for minion in *@spacebase.crew
             sx, sy = @cam\toScreen(minion.x, minion.y)
-            sy /= 2 -- account for squishiness
+            sy /= @squishFactor
             love.graphics.push()
             scale = @cam\getScale()
             love.graphics.scale(scale, scale)
@@ -67,7 +68,7 @@ class SpacebaseView
                 if item
                     {wx, wy} = @spacebase\tileToWorld(tile.row, tile.col)
                     sx, sy = @cam\toScreen(wx, wy)
-                    sy /= 2 -- account for squishiness
+                    sy /= @squishFactor -- account for squishiness
                     love.graphics.push()
                     scale = @cam\getScale()
                     love.graphics.scale(scale, scale)
@@ -103,5 +104,5 @@ class SpacebaseView
     keyreleased: (key) =>
 
     coordinatesInWorld: (x, y) =>
-        world_x, world_y = @cam\toWorld(x, 2 * y)
+        world_x, world_y = @cam\toWorld(x, @squishFactor * y)
         return {world_x, world_y}
