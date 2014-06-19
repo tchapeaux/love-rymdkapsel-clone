@@ -17,10 +17,10 @@ class Extractor extends Producer
     new: (@shape, origin, @leftTurns)=>
         super(@shape, origin, @leftTurns)
 
-    update: (dt) =>
+    canProduce: () =>
         -- TODO: check if associated Deposits still has Material in it
-        super(dt)
+        return true
 
     draw: =>
-        -- TODO: draw a line between the extractor and deposit
+        -- TODO: draw a line between the extractor and deposit when producing
         super()

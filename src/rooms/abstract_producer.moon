@@ -12,12 +12,17 @@ class Producer extends Room
         [Food]: 0
     }
     -- child class must define the following class variables
+    -- and also the canProduce method below
     productionRate: 2 -- seconds (should be 30)
     producedResource: nil -- should be a subclass of Item
 
     new: (@shape, origin, @leftTurns)=>
         super(@shape, origin, @leftTurns)
         @productionCounter = 0
+
+    canProduce: =>
+        -- may be overwritten by children class
+        return true
 
     currentResourceCounter: =>
         items = @getItems()
@@ -34,7 +39,7 @@ class Producer extends Room
 
     update: (dt) =>
         super(dt)
-        if @currentResourceCounter() < #@tiles
+        if @canProduce() and @currentResourceCounter() < #@tiles
             if @productionCounter >= @productionRate
                 @produceResource()
                 @productionCounter = 0
