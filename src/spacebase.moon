@@ -97,6 +97,16 @@ class Spacebase
         love.graphics.pop()
 
 
+    drawPath: (path) =>
+        size = #path
+        for i = 1, size - 1
+            {row, col} = path[i]
+            {row2, col2} = path[i + 1]
+            {x, y} = @tileToWorld(row, col)
+            {x2, y2} = @tileToWorld(row2, col2)
+            love.graphics.setColor(0, 0, 0)
+            love.graphics.line(x, y, x2, y2)
+
     placeFloatingRoom: =>
         -- TODO: assert that floating room is valid
         assert(@floatingRoom)
@@ -147,3 +157,42 @@ class Spacebase
                         tile.neighbors[Tile.kUP] = @tileGrid[i][j - 1]
                     if j < @kBASE_SIZE
                         tile.neighbors[Tile.kDOWN] = @tileGrid[i][j + 1]
+
+    pathFinding: (row1, col1, row2, col2) =>
+        -- return a path (as a table of {row, col} coordinate) between two tiles
+        -- Breadth-First
+        assert @tileGrid[row1][col1] ~= nil and @tileGrid[row2][col2] ~= nil
+        row, col = row1, col1
+        tile_queue = {}
+        marked = {} -- contains the previous tile of each tile reached
+        in_marked = (r, c) -> return marked[r] ~= nil and marked[r][c] ~= nil
+        mark_tile = (r, c, prevCoor) ->
+            if marked[r] == nil then marked[r] = {}
+            marked[r][c] = prevCoor
+        -- breadth-first exhaustive search using a queue
+        while row ~= row2 or col ~= col2
+            assert @tileGrid[row][col] ~= nil
+            tile = @tileGrid[row][col]
+            for neigh in *tile.neighbors
+                if neigh and not in_marked(neigh.row, neigh.col)
+                    mark_tile(neigh.row, neigh.col, {tile.row, tile.col})
+                    table.insert(tile_queue, neigh)
+            if #tile_queue == 0
+                return nil -- no path found
+            nextTile = table.remove(tile_queue, 1)
+            row, col = nextTile.row, nextTile.col
+        assert row == row2 and col == col2, "#{row}, #{col}, #{row2}, #{col2}"
+        -- retrace path back using marks
+        path = {}
+        table.insert(path, {row, col})
+        loopCounter = 0
+        while row ~= row1 and col ~= col1
+            loopCounter += 1
+            assert loopCounter <= @kBASE_SIZE * @kBASE_SIZE, "Infinite loop?"
+            assert @tileGrid[row][col] ~= nil
+            {row, col} = marked[row][col]
+            table.insert(path, {row, col})
+        table.insert(path, {row1, col1})
+        return path
+
+
