@@ -3,13 +3,16 @@ export ^
 require "rooms/rock"
 require "rooms/corridor"
 require "rooms/reactor"
+require "rooms/extractor"
+require "rooms/gardens"
+require "rooms/kitchen"
 require "ui/button"
 shapes = require "rooms/shape"
 
 class UI
     -- todo? separate roomPlacer and crewScheduler?
     new: (@spacebase) =>
-        @roomTypes = {Rock, Corridor, Reactor}
+        @roomTypes = {Corridor, Reactor, Extractor, Gardens, Kitchen}
         @nextShapes = {}
         @hRatio = 0.1 -- space taken on screen
         -- fill with random shapes
