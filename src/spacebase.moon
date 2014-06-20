@@ -74,8 +74,8 @@ class Spacebase
             @drawRoom(room)
         if @floatingRoom
             @drawRoom(@floatingRoom)
-        -- debug: see neighbors
         if kDEBUG
+            -- display neighbours
             love.graphics.setLineWidth(2)
             love.graphics.setColor({50,50,50})
             neighbors = {Tile.kRIGHT, Tile.kLEFT, Tile.kUP, Tile.kDOWN}
