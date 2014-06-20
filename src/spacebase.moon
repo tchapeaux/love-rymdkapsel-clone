@@ -90,12 +90,13 @@ class Spacebase
 
 
     drawRoom: (room) =>
-            i = room.row - 1
-            j = room.col - 1
-            love.graphics.push()
-            love.graphics.translate(i * Tile.kTILE_SIZE, j * Tile.kTILE_SIZE)
-            room\draw()
-            love.graphics.pop()
+        i = room.row - 1
+        j = room.col - 1
+        love.graphics.push()
+        love.graphics.translate(i * Tile.kTILE_SIZE, j * Tile.kTILE_SIZE)
+        room\draw()
+        love.graphics.pop()
+
 
     placeFloatingRoom: =>
         -- TODO: assert that floating room is valid
