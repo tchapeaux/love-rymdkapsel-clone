@@ -75,7 +75,7 @@ class Spacebase
         if @floatingRoom
             @drawRoom(@floatingRoom)
         -- debug: see neighbors
-        if false
+        if kDEBUG
             love.graphics.setLineWidth(2)
             love.graphics.setColor({50,50,50})
             neighbors = {Tile.kRIGHT, Tile.kLEFT, Tile.kUP, Tile.kDOWN}
@@ -84,10 +84,9 @@ class Spacebase
                     for n in *neighbors
                         if @tileGrid[i][j] and @tileGrid[i][j].neighbors[n]
                             neigh = @tileGrid[i][j].neighbors[n]
-                            {x1, y1} = @tileCenterCoordinates(i, j)
-                            {x2, y2} = @tileCenterCoordinates(neigh.x, neigh.y)
+                            {x1, y1} = @tileToWorld(i, j)
+                            {x2, y2} = @tileToWorld(neigh.row, neigh.col)
                             love.graphics.line(x1, y1, x2, y2)
-
 
     drawRoom: (room) =>
         i = room.row - 1
