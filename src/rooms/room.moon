@@ -63,6 +63,9 @@ class Room
             if outline
                 love.graphics.setColor(255, 255, 255, 100)
                 love.graphics.rectangle("line", x, y, w, h)
+            if kDEBUG
+                love.graphics.setColor(255, 255, 255)
+                love.graphics.printf("#{tile.row}, #{tile.col}", x, y, w, "center")
 
     updatePosition: (newRow, newCol) =>
         @row = newRow
