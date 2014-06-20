@@ -15,12 +15,17 @@ love.load = ->
 
 love.draw = ->
     game\draw()
+    if kDEBUG
+        love.graphics.origin()
+        love.graphics.printf(love.timer.getFPS(), 0, 0, wScr(), "right")
 
 love.update = (dt) ->
     flux.update(dt)
     game\update(dt)
 
 love.keyreleased = (key) ->
+    if key == "p"
+        kDEBUG = not kDEBUG
     game\keyreleased(key)
 
 love.mousepressed = (x, y, button) ->
