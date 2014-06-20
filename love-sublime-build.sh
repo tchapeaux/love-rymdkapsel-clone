@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NAME=rymdkapslov
+NAME=karlekkapsel
 AUTHOR=Altom
 LOVE_VERSION=0.9.1
 

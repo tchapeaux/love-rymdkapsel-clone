@@ -1,9 +1,9 @@
 love.conf = (t) ->
-    t.title = "Rymdkapslov"        -- The title of the window the game is in (string)
+    t.title = "kärlekkapsel"        -- The title of the window the game is in (string)
     t.icon = "res/logo/blanklogo.png" -- Filepath to an image to use as the window's icon (string)
     t.author = "Altom"        -- The author of the game (string)
     t.url = nil                 -- The website of the game (string)
-    t.identity = "blank"            -- The name of the save directory (string)
+    t.identity = "karlekkapsel"            -- The name of the save directory (string)
     t.version = "0.9.1"         -- The LÖVE version this game was made for (string)
     t.console = false           -- Attach a console (boolean, Windows only)
     t.release = false           -- Enable release mode (boolean)
