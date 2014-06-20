@@ -19,7 +19,7 @@ class Extractor extends Producer
 
     canProduce: () =>
         -- TODO: check if associated Deposits still has Material in it
-        return true
+        return true and super()
 
     draw: =>
         -- TODO: draw a line between the extractor and deposit when producing

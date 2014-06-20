@@ -22,7 +22,7 @@ class Producer extends Room
 
     canProduce: =>
         -- may be overwritten by children class
-        return true
+        return @state == @states.finished and @currentResourceCounter() < #@tiles
 
     currentResourceCounter: =>
         items = @getItems()
@@ -39,7 +39,7 @@ class Producer extends Room
 
     update: (dt) =>
         super(dt)
-        if @canProduce() and @currentResourceCounter() < #@tiles
+        if @canProduce()
             if @productionCounter >= @productionRate
                 @produceResource()
                 @productionCounter = 0

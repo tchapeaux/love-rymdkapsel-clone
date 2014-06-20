@@ -18,11 +18,12 @@ class Kitchen extends Producer
         super(@shape, origin, @leftTurns)
 
     canProduce: () =>
+        ok = false
         items = @getItems()
         for item in *items
             if item.__class == Sludge
-                return true
-        return false
+                ok = true
+        return ok and super()
 
     produceResource: =>
         for tile in *@tiles
