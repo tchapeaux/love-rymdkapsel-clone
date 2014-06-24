@@ -66,6 +66,21 @@ class Room
             if kDEBUG
                 love.graphics.setColor(255, 255, 255)
                 love.graphics.printf("#{tile.row}, #{tile.col}", x, y, w, "center")
+        -- construction bars
+        if @state == @states.construction
+            for i, res in ipairs({Energy, Material, Food})
+                tSize = Tile.kTILE_SIZE
+                w = tSize / 10
+                h = tSize / 3
+                m = tSize / 20 -- margins
+                x = 4 * m + (i - 1) * (w + m)
+                y = 2 * tSize / 7
+                love.graphics.setColor(res.color)
+                love.graphics.rectangle("fill", x, y, w, h)
+                love.graphics.setColor(0, 0, 0, 100)
+                completionFactor = @current_resources[res] / @required_resources[res]
+                love.graphics.rectangle("fill", x, y + completionFactor * h, w, h * (1 - completionFactor))
+
 
     updatePosition: (newRow, newCol) =>
         @row = newRow
