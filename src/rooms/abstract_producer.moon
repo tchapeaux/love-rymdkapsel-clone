@@ -11,7 +11,7 @@ class Producer extends Room
         [Material]: 0
         [Food]: 0
     }
-    -- child class must define the following class variables
+    -- child classes must define the following class variables
     -- and also the canProduce method below
     productionRate: 2 -- seconds (should be 30)
     producedResource: nil -- should be a subclass of Item
