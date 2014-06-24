@@ -27,3 +27,8 @@ class Gun extends Item
     draw: =>
         love.graphics.setColor(0, 0, 0)
         love.graphics.rectangle("fill", -5, -5, 10, 10)
+
+class ResearchEquipment extends Item
+    draw: =>
+        love.graphics.setColor(255, 255, 255)
+        love.graphics.rectangle("fill", -5, -5, 10, 10)
