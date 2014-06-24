@@ -64,12 +64,13 @@ class Spacebase
     draw: =>
         tileSize = Tile.kTILE_SIZE
         totalSize = Spacebase.totalSize()
-        for i=1, @kBASE_SIZE + 1
-            love.graphics.setColor(255, 255, 255, 150)
-            love.graphics.setLineWidth(1)
-            i -= 1 -- begins at 0
-            love.graphics.line(0, i * tileSize, totalSize, i * tileSize)
-            love.graphics.line(i * tileSize, 0, i * tileSize, totalSize)
+        if kDEBUG -- show grid
+            for i=1, @kBASE_SIZE + 1
+                love.graphics.setColor(255, 255, 255, 150)
+                love.graphics.setLineWidth(1)
+                i -= 1 -- begins at 0
+                love.graphics.line(0, i * tileSize, totalSize, i * tileSize)
+                love.graphics.line(i * tileSize, 0, i * tileSize, totalSize)
         for room in *@rooms
             @drawRoom(room)
         if @floatingRoom
