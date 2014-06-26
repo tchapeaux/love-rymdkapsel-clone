@@ -1,6 +1,6 @@
 export ^
 
-require "rooms/room"
+require "world/rooms/room"
 
 
 class Corridor extends Room

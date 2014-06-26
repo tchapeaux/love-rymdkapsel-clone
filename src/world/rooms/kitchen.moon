@@ -1,7 +1,7 @@
 export ^
 
-require "items"
-require "rooms/abstract_producer"
+require "world/items"
+require "world/rooms/abstract_producer"
 
 class Kitchen extends Producer
     color: {224, 161, 28}

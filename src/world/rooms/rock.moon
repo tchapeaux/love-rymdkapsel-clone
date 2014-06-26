@@ -1,6 +1,6 @@
 export ^
 
-require "rooms/room"
+require "world/rooms/room"
 
 class Rock extends Room
     color: {59, 62, 67}

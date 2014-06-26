@@ -52,15 +52,15 @@ class SpacebaseView
         @cam\draw(@spacebase\draw)
         -- draw entities (minions and items) (un-rotated and un-squished)
         love.graphics.scale(1, @squishFactor)
-        for minion in *@spacebase.crew
-            sx, sy = @cam\toScreen(minion.x, minion.y)
-            sy /= @squishFactor
-            love.graphics.push()
-            scale = @cam\getScale()
-            love.graphics.scale(scale, scale)
-            love.graphics.translate(sx / scale, sy / scale)
-            minion\draw()
-            love.graphics.pop()
+        -- for minion in *@spacebase.crew
+        --     sx, sy = @cam\toScreen(minion.x, minion.y)
+        --     sy /= @squishFactor
+        --     love.graphics.push()
+        --     scale = @cam\getScale()
+        --     love.graphics.scale(scale, scale)
+        --     love.graphics.translate(sx / scale, sy / scale)
+        --     minion\draw()
+        --     love.graphics.pop()
 
         for room in *@spacebase.rooms
             for tile in *room.tiles

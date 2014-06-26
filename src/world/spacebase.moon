@@ -8,6 +8,7 @@ require "rooms/extractor"
 shapes = require "rooms/shape"
 
 class Spacebase
+    -- Encapsulate the world grid and the Room structure
     kBASE_SIZE: 20  -- in tile²
     totalSize: ->
         return Spacebase.kBASE_SIZE * Tile.kTILE_SIZE
@@ -50,8 +51,6 @@ class Spacebase
         table.insert(startupRooms, temp_room)
         for room in *startupRooms
             @addRoom(room)
-
-        @crew = {}
 
     update: (dt) =>
         if @floatingRoom
@@ -132,20 +131,15 @@ class Spacebase
         y = (j - 1) * Tile.kTILE_SIZE + 0.5 * Tile.kTILE_SIZE
         return {x, y}
 
-    getItems: (fromCrew=true, fromRooms=true) =>
+    getItems: () =>
         items = {}
-        if fromCrew
-            for minion in *@crew
-                item = minion\getItem()
-                if item
-                    table.insert(items, item)
-        if fromRooms
-            for room in *@rooms
-                for item in *room\getItems()
-                    table.insert(items, item)
+        for room in *@rooms
+            for item in *room\getItems()
+                table.insert(items, item)
         return items
 
     updateNeighbors: =>
+        -- TODO: refactor by iterating over @rooms (more efficient probably)
         for i=1,@kBASE_SIZE
             for j=1,@kBASE_SIZE
                 tile = @tileGrid[i][j]

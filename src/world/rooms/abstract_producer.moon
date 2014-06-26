@@ -1,7 +1,7 @@
 export ^
 
-require "tile"
-require "rooms/room"
+require "world/tile"
+require "world/rooms/room"
 
 class Producer extends Room
     color: {0,0,0}

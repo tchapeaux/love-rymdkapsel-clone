@@ -1,6 +1,6 @@
 export ^
 
-require "spacebase"
+require "world/spacebase"
 require "spacebaseview"
 require "ui/ui"
 
@@ -9,6 +9,7 @@ class Game
         @spacebase = Spacebase()
         @view = SpacebaseView(@spacebase)
         @ui = UI(@spacebase)
+        @minions = {}
 
     update: (dt) =>
         @view\update(dt)

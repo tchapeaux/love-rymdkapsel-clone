@@ -1,7 +1,7 @@
 export ^
 
-require "tile"
-require "items"
+require "world/tile"
+require "world/items"
 shapes  = require "rooms/shape"
 
 class Room
@@ -78,7 +78,9 @@ class Room
                 love.graphics.setColor(res.color)
                 love.graphics.rectangle("fill", x, y, w, h)
                 love.graphics.setColor(0, 0, 0, 100)
-                completionFactor = @current_resources[res] / @required_resources[res]
+                cur = @current_resources[res]
+                req = @required_resources[res]
+                completionFactor = cur / req
                 love.graphics.rectangle("fill", x, y + completionFactor * h, w, h * (1 - completionFactor))
 
 
@@ -91,13 +93,14 @@ class Room
     confirm: =>
         assert @state == @states.floating
         @state = @states.construction
-        -- TODO : find neighbors?
 
     has_all_resources: =>
         ok = true
         for res in *{Energy, Material, Food}
             ok and= @required_resources[res] == @current_resources[res]
         return ok
+
+    --TODO: add a method res_completed(resType) = required[res] == current[res]
 
     getItems: =>
         items = {}

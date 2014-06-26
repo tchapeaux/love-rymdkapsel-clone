@@ -1,7 +1,5 @@
 export ^
 
-require "items" -- for debug purpose only
-
 class Tile
     kTILE_SIZE: 100   -- in px
     kLEFT: 1
