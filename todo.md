@@ -3,6 +3,7 @@
 ## Features
 
 [ ] Add the Enemy
+[ ] Make minions shoot
 [ ] Add Deposits
 [ ] UI for Minion Scheduler
 [ ] Room Selector and Prioritizer (UI?)
