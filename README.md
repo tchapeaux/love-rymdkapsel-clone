@@ -1,5 +1,5 @@
-RYMDKAPSLÖV
------------
+KÄRLEKKAPSEL
+------------
 
 A clone of [rymdkapsel](http://rymdkapsel.com/) in LÖVE.
 
