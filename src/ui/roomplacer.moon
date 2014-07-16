@@ -11,7 +11,7 @@ shapes = require "world/rooms/shape"
 
 
 class RoomPlacer
-    new: =>
+    new: (@spacebase) =>
         @roomTypes = {Corridor, Reactor, Extractor, Gardens, Kitchen}
         @nextShapes = {}
         @hRatio = 0.1 -- space taken on screen
