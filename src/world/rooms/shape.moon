@@ -56,7 +56,7 @@ zShape = {
 
 randomShape = ->
     shapes = {
-        dotShape, iShape, oShape, tShape, jShape, lShape, sShape, zShape
+        iShape, oShape, tShape, jShape, lShape, sShape, zShape
     }
     return shapes[math.random(#shapes)]
 
