@@ -2,7 +2,7 @@ export ^
 
 require "world/tile"
 require "world/items"
-shapes  = require "rooms/shape"
+shapes  = require "world/rooms/shape"
 
 class Room
     states: {

@@ -1,11 +1,11 @@
 export ^
 
-require "tile"
-require "rooms/rock"
-require "rooms/corridor"
-require "rooms/reactor"
-require "rooms/extractor"
-shapes = require "rooms/shape"
+require "world/tile"
+require "world/rooms/rock"
+require "world/rooms/corridor"
+require "world/rooms/reactor"
+require "world/rooms/extractor"
+shapes = require "world/rooms/shape"
 
 class Spacebase
     -- Encapsulate the world grid and the Room structure
@@ -153,21 +153,28 @@ class Spacebase
                     if j < @kBASE_SIZE
                         tile.neighbors[Tile.kDOWN] = @tileGrid[i][j + 1]
 
-    pathFinding: (row1, col1, row2, col2) =>
-        -- return a path (as a table of {row, col} coordinate) between two tiles
-        -- Breadth-First
-        assert @tileGrid[row1][col1] ~= nil and @tileGrid[row2][col2] ~= nil
+    pathFinding: (row1, col1, row2, col2, acceptSameRoom=false) =>
+        -- Return a path (as a table of {row, col} coordinate) between two tiles
+        -- Currently use Breadth-First Search (TODO: improve efficiency?)
+        -- @param row1, col1: start tile of path
+        -- @param row2, col2: end tile of path
+        -- @param acceptSameRoom: if true, may return a path not ending at the end tile, but in the same room
+        -- TODO: unit testing
+        assert @tileGrid[row1][col1] ~= nil and @tileGrid[row2][col2] ~= nil, "pathFinding: start or end tile is nil"
+        endRoom = @tileGrid[row2][col2].room
         row, col = row1, col1
         tile_queue = {}
-        marked = {} -- contains the previous tile of each tile reached
+        marked = {} -- the mark is the previous coordinate in the path
         in_marked = (r, c) -> return marked[r] ~= nil and marked[r][c] ~= nil
         mark_tile = (r, c, prevCoor) ->
             if marked[r] == nil then marked[r] = {}
             marked[r][c] = prevCoor
-        -- breadth-first exhaustive search using a queue
         while row ~= row2 or col ~= col2
-            assert @tileGrid[row][col] ~= nil
+            assert @tileGrid[row][col] ~= nil, "pathfinding: invalid state (current tile is nil)"
             tile = @tileGrid[row][col]
+            -- special condition for acceptSameRoom
+            if acceptSameRoom and tile.room == endRoom
+                break
             for neigh in *tile.neighbors
                 if neigh and not in_marked(neigh.row, neigh.col)
                     mark_tile(neigh.row, neigh.col, {tile.row, tile.col})
@@ -176,14 +183,17 @@ class Spacebase
                 return nil -- no path found
             nextTile = table.remove(tile_queue, 1)
             row, col = nextTile.row, nextTile.col
-        assert row == row2 and col == col2, "#{row}, #{col}, #{row2}, #{col2}"
+        if acceptSameRoom
+            assert @tileGrid[row][col].room == endRoom, "pathfinding: search returned a wrong tile. Searched: (#{row}, #{col}), got: (#{row2}, #{col2})"
+        else
+            assert row == row2 and col == col2, "pathfinding: search returned a wrong tile. Searched: (#{row}, #{col}), got: (#{row2}, #{col2})"
         -- retrace path back using marks
         path = {}
         table.insert(path, {row, col})
         loopCounter = 0
         while row ~= row1 and col ~= col1
             loopCounter += 1
-            assert loopCounter <= @kBASE_SIZE * @kBASE_SIZE, "Infinite loop?"
+            assert loopCounter <= @kBASE_SIZE * @kBASE_SIZE, "Pathfinding: infinite cycle in marks"
             assert @tileGrid[row][col] ~= nil
             {row, col} = marked[row][col]
             table.insert(path, {row, col})

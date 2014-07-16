@@ -8,6 +8,7 @@ class Minion
     kMaxLife: 100
 
     new: (@x, @y) =>
+        @missionType = nil
         @itemCarried = nil
         @path = {}
         @idling = true
@@ -49,4 +50,4 @@ class Minion
                         newPosition[coord] = nextPosition[coord]
                         table.remove(@path, 1)
         if @itemCarried.__class == Gun
-            -- TODO: shoot
+            todo() -- TODO
