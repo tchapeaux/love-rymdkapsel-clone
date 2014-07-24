@@ -3,7 +3,7 @@ export ^
 class Vector
     new: (@x, @y) =>
 
-    dist: (otherV, squared=false): =>
+    dist: (otherV, squared=false) =>
         dx = @x - otherV.x
         dy = @y - otherV.y
         dist_sq = dx * dx + dy * dy
