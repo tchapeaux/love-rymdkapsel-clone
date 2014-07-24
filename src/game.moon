@@ -1,14 +1,14 @@
 export ^
 
 require "world/spacebase"
-require "spacebaseview"
+require "gameview"
 -- require "world/minions/scheduler"
 require "ui/ui"
 
 class Game
     new: =>
         @spacebase = Spacebase()
-        @view = SpacebaseView(@spacebase)
+        @view = GameView(@)
         -- @minionscheduler = MinionScheduler()
         @ui = UI(@)
 

@@ -3,8 +3,9 @@ export ^
 require "star"
 gamera = require "lib/gamera/gamera"
 
-class SpacebaseView
-    new: (@spacebase) =>
+class GameView
+    new: (@game) =>
+        @spacebase = @game.spacebase
         @size = @spacebase.totalSize()
         @canvas = love.graphics.newCanvas(@size, @size)
         @cam = gamera.new(-@size/2, -@size/2, 2 * @size, 2 * @size)
