@@ -6,6 +6,7 @@ hScr = love.graphics.getHeight
 
 require "game"
 export flux = require "lib/flux/flux"
+export helper = require "helper"
 
 export kDEBUG = false
 
