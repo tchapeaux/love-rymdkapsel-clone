@@ -32,7 +32,7 @@ class RoomPlacer
             y = buttons_margin_h
             w = buttons_width
             h = @hRatio * hScr()
-            butt = Button(x, y, w, h, room)
+            butt = Button(x, y, w, h, room.name, room.color)
             table.insert(@roomButtons, butt)
 
     draw: =>
