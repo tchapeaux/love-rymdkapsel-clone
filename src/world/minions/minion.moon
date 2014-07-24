@@ -8,7 +8,7 @@ class Minion
     kMaxLife: 100
 
     new: (@x, @y) =>
-        @missionType = nil
+        @missionState = nil
         @itemCarried = nil
         @path = {}
         @idling = true
@@ -24,9 +24,15 @@ class Minion
             love.graphics.rectangle("fill", 0, -width / 2, height, width)
         else
             love.graphics.rectangle("fill", -width / 2, -height / 2, width, height)
+        -- draw carried item
+        item = @getItem()
+        if item
+            love.graphics.translate(width / 2, 0)
+            item\draw()
+
 
     getItem: =>
-        return @mission.item
+        return @itemCarried
 
     update: (dt, spacebase) =>
         -- follow the path set by the MinionScheduler
@@ -49,5 +55,6 @@ class Minion
                         -- and pop the position in the path
                         newPosition[coord] = nextPosition[coord]
                         table.remove(@path, 1)
+        -- shooting
         if @itemCarried.__class == Gun
             todo() -- TODO
