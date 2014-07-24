@@ -5,8 +5,11 @@ lume = require "lib/lume/lume"
 class AbstractMissionComponent
     missionType: "abstract"
 
-    -- ABSTRACT METHODS
-    -- To be defined by children class
+    add: (minion) =>
+        -- assign this mission to minion
+        -- the following default behavior is provided
+        minion.missionType = @missionType
+        table.insert(@minions, minion)
 
     pop: =>
         -- should return the "less useful" minion and remove it from the component
@@ -17,35 +20,21 @@ class AbstractMissionComponent
     giveMission: (minion) =>
         -- assign a mission to minion if possible
 
-    getMinionCount: =>
-        -- return the number of minions with this mission assigned
-
-    -- CONCRETE METHODS
-
-    makeWeak: (table, key=true, value=false) ->
-        meta = getmetatable(table)
-        if meta == nil
-            meta = {}
-        meta.__mode == ""
-        if key
-            meta.__mode ..= "k"
-        if value
-            meta.__mode ..= "v"
-        setmetatable(table, meta)
+    getMinions: (idle=true, busy=true) =>
+        -- return the corresponding minions
+        -- the following default behavior is provided
+        returned = {}
+        for minion in *@minions
+            if (@has_mission(minion) and busy) or (not @has_mission(minion) and idle)
+                table.insert(returned, minion)
+        return returned
 
     new: (@spacebase) =>
-        @idleMinions = {}
-        @makeWeak(@idleMinions)
+        @minions = {}
+        helper.makeWeakTable(@minions)
 
     update: (dt) =>
-        newIdleTable = {}
-        @makeWeak(newIdleTable)
-        for minion in *@idleMinions
-            giveMission(minion)
+        for minion in *@minions
             if not has_mission(minion)
-                table.insert(newIdleTable, minion)
-        @idleMinions = newIdleTable
-
-    add: (minion) =>
-        minion.missionType = @missionType
-        table.insert(@idleMinions, minion)
+                -- try to find a mission
+                giveMission(minion)

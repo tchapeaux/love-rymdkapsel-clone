@@ -6,8 +6,8 @@ class IdleComponent extends AbstractMissionComponent
     missionType: "idle"
 
     pop: =>
-        if #@idleMinions > 0
-            return table.remove(@idleMinions)
+        if #@minions > 0
+            return table.remove(@minions)
         return nil
 
     has_mission: (minion) =>
@@ -15,6 +15,3 @@ class IdleComponent extends AbstractMissionComponent
 
     giveMission: (minion) =>
         return
-
-    getMinionCount: =>
-        return #@idleMinions

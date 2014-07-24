@@ -3,9 +3,7 @@ export ^
 class roomTracker
     new: (@spacebase, @roomType) =>
         roomList = {}
-        meta = {}
-        meta.__mode == "kv"
-        setmetatable(roomList, meta)
+        helper.makeWeakTable(roomList)
 
     update: (dt) =>
         -- add new rooms

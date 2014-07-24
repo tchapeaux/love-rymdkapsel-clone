@@ -12,7 +12,7 @@ class EngineeringComponent extends AbstractMissionComponent
         super(spacebase)
         reactorTracker = RoomTracker(spacebase, Reactor)
         @reactorToMinion = {} -- key: reactor; value: minion
-        makeWeak(reactorToMinion)
+        helper.makeWeakTable(reactorToMinion)
 
     update: (dt) =>
         reactorTracker\update(dt)
@@ -38,9 +38,11 @@ class EngineeringComponent extends AbstractMissionComponent
 
     giveMission: (minion) =>
         -- TODO: find closer reactor
+        -- TODO: balance minions between reactors
         for reactor in *@reactorTracker
             if reactorToMinion[reactor] == nil
                 reactorToMinion[reactor] = minion
+        minion.missionState = MinionMissionState(reactor.origin, false, @)
 
     getMinionCount: =>
         idleCount = #@idleMinions
