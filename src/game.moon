@@ -10,7 +10,7 @@ class Game
         @spacebase = Spacebase()
         @view = GameView(@)
         @minionscheduler = MinionScheduler(@)
-        @minionscheduler\create_minion(@spacebase.kBASE_SIZE / 2, @spacebase.kBASE_SIZE / 2)
+        @minionscheduler\create_minion(@spacebase.kBASE_SIZE / 2 - 1, @spacebase.kBASE_SIZE / 2)
         @minionscheduler\assign(@minionscheduler.missionTypes.idle, @minionscheduler.missionTypes.engineering)
         @ui = UI(@)
 

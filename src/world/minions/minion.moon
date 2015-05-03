@@ -7,7 +7,9 @@ class Minion
     kSpeed: 100 -- px/s^2
     kMaxLife: 100
 
-    new: (@x, @y) =>
+    new: (tile_x, tile_y) =>
+        @x = Tile.kTILE_SIZE * tile_x + Tile.kTILE_SIZE / 2
+        @y = Tile.kTILE_SIZE * tile_y + Tile.kTILE_SIZE / 2
         @missionState = nil
         @itemCarried = nil
         @path = {}
