@@ -3,7 +3,7 @@
         meta = getmetatable(table)
         if meta == nil
             meta = {}
-        meta.__mode == ""
+        meta.__mode = ""
         if key
             meta.__mode ..= "k"
         if value

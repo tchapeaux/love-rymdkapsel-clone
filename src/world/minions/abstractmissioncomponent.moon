@@ -5,6 +5,9 @@ lume = require "lib/lume/lume"
 class AbstractMissionComponent
     missionType: "abstract"
 
+    new: (@spacebase) =>
+        @minions = {}
+
     add: (minion) =>
         -- assign this mission to minion
         -- the following default behavior is provided
@@ -29,12 +32,9 @@ class AbstractMissionComponent
                 table.insert(returned, minion)
         return returned
 
-    new: (@spacebase) =>
-        @minions = {}
-        helper.makeWeakTable(@minions)
-
     update: (dt) =>
         for minion in *@minions
-            if not has_mission(minion)
+            minion\update(dt)
+            if not @has_mission(minion)
                 -- try to find a mission
-                giveMission(minion)
+                @giveMission(minion)

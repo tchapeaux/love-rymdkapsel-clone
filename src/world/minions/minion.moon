@@ -34,7 +34,7 @@ class Minion
     getItem: =>
         return @itemCarried
 
-    update: (dt, spacebase) =>
+    update: (dt) =>
         -- follow the path set by the MinionScheduler
         if @path and #@path > 0
             -- go towards next point/position in path
@@ -56,5 +56,5 @@ class Minion
                         newPosition[coord] = nextPosition[coord]
                         table.remove(@path, 1)
         -- shooting
-        if @itemCarried.__class == Gun
+        if @itemCarried and @itemCarried.__class == Gun
             todo() -- TODO

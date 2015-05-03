@@ -47,7 +47,7 @@ class GameView
             @cam\setAngle(cam_angle + @rotationspeed * dt)
 
     draw: =>
-        @\draw_starfield()
+        @draw_starfield()
         love.graphics.scale(1, 1 / @squishFactor)
         -- draw spacebase (rotated and squished)
         @cam\draw(@spacebase\draw)

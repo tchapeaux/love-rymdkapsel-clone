@@ -10,12 +10,12 @@ class EngineeringComponent extends AbstractMissionComponent
 
     new: (spacebase) =>
         super(spacebase)
-        reactorTracker = RoomTracker(spacebase, Reactor)
+        @reactorTracker = RoomTracker(@spacebase, Reactor)
         @reactorToMinion = {} -- key: reactor; value: minion
-        helper.makeWeakTable(reactorToMinion)
+        helper.makeWeakTable(@reactorToMinion)
 
     update: (dt) =>
-        reactorTracker\update(dt)
+        @reactorTracker\update(dt)
         super(dt)
 
     pop: =>
@@ -25,13 +25,13 @@ class EngineeringComponent extends AbstractMissionComponent
         else
             -- if all minions are busy: pop one at random
             -- TODO: prioritize minions not carrying items
-            for reactor, minion in pairs(reactorToMinion)
+            for reactor, minion in pairs(@reactorToMinion)
                 -- we arbitrarily return the first minion
-                reactorToMinion[reactor] = nil
+                @reactorToMinion[reactor] = nil
                 return minion
 
     has_mission: (minion) =>
-        for reactor, busyminion in pairs(reactorToMinion)
+        for reactor, busyminion in pairs(@reactorToMinion)
             if busyminion == minion
                 return true
         return false
@@ -40,9 +40,9 @@ class EngineeringComponent extends AbstractMissionComponent
         -- TODO: find closer reactor
         -- TODO: balance minions between reactors
         for reactor in *@reactorTracker
-            if reactorToMinion[reactor] == nil
-                reactorToMinion[reactor] = minion
-        minion.missionState = MinionMissionState(reactor.origin, false, @)
+            if @reactorToMinion[reactor] == nil
+                @reactorToMinion[reactor] = minion
+                minion.missionState = MinionMissionState(reactor.origin, false, @)
 
     getMinionCount: =>
         idleCount = #@idleMinions
@@ -63,4 +63,4 @@ class EngineeringComponent extends AbstractMissionComponent
                 table.insert(index_to_remove, index)
         for index in *index_to_remove
             reactor = table.remove(@reactorRoomList, index)
-            reactorToMinion[reactor] = nil
+            @reactorToMinion[reactor] = nil

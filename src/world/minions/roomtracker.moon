@@ -1,9 +1,11 @@
 export ^
 
-class roomTracker
+lume = require "lib/lume/lume"
+
+class RoomTracker
     new: (@spacebase, @roomType) =>
-        roomList = {}
-        helper.makeWeakTable(roomList)
+        @roomList = {}
+        helper.makeWeakTable(@roomList)
 
     update: (dt) =>
         -- add new rooms
@@ -12,9 +14,4 @@ class roomTracker
                 if lume.find(@roomList, room) == nil
                     table.insert(@roomList, room)
         -- remove deleted rooms
-        index_to_remove = {}
-        for index, reactor in *@roomList
-            if lume.find(@spacebase.rooms, reactor) == nil
-                table.insert(index_to_remove, index)
-        for index in *index_to_remove
-            room = table.remove(@roomList, index)
+        @roomList = lume.filter(@roomList, (r) -> lume.find(@spacebase.rooms, r) ~= nil)
