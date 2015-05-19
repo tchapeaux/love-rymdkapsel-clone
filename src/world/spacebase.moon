@@ -7,6 +7,8 @@ require "world/rooms/reactor"
 require "world/rooms/extractor"
 shapes = require "world/rooms/shape"
 
+lume = require "lib/lume/lume"
+
 class Spacebase
     -- Encapsulate the world grid and the Room structure
     kBASE_SIZE: 20  -- in tile²
@@ -41,7 +43,7 @@ class Spacebase
         temp_room\confirm()
         temp_room\build(true)
         table.insert(startupRooms, temp_room)
-        temp_room = Reactor(shapes.t, {@kBASE_SIZE / 2 - 1, @kBASE_SIZE/2 + 3}, 1)
+        temp_room = Reactor(shapes.t, {@kBASE_SIZE / 2 - 1, @kBASE_SIZE/2 + 2}, 1)
         temp_room\confirm()
         temp_room\build(true)
         table.insert(startupRooms, temp_room)
@@ -161,6 +163,7 @@ class Spacebase
         -- @param acceptSameRoom: if true, may return a path not ending at the end tile, but in the same room
         -- TODO: unit testing
         assert @tileGrid[row1][col1] ~= nil and @tileGrid[row2][col2] ~= nil, "pathFinding: start or end tile is nil"
+        -- print "PathFinding", row1, col1, row2, col2
         endRoom = @tileGrid[row2][col2].room
         row, col = row1, col1
         tile_queue = {}
@@ -170,6 +173,8 @@ class Spacebase
             if marked[r] == nil then marked[r] = {}
             marked[r][c] = prevCoor
         while row ~= row2 or col ~= col2
+            -- print "current", row, col, "tilequeue is ", lume.serialize(tile_queue)
+            -- print "tile_queue", lume.serialize(tile_queue)
             assert @tileGrid[row][col] ~= nil, "pathfinding: invalid state (current tile is nil)"
             tile = @tileGrid[row][col]
             -- special condition for acceptSameRoom
@@ -177,27 +182,29 @@ class Spacebase
                 break
             for neigh in *tile.neighbors
                 if neigh and not in_marked(neigh.row, neigh.col)
+                    -- print "exploring", neigh.row, neigh.col, "from", row, col
                     mark_tile(neigh.row, neigh.col, {tile.row, tile.col})
-                    table.insert(tile_queue, neigh)
+                    table.insert(tile_queue, {neigh.row, neigh.col})
             if #tile_queue == 0
                 return nil -- no path found
             nextTile = table.remove(tile_queue, 1)
-            row, col = nextTile.row, nextTile.col
+            row, col = nextTile[1], nextTile[2]
         if acceptSameRoom
-            assert @tileGrid[row][col].room == endRoom, "pathfinding: search returned a wrong tile. Searched: (#{row}, #{col}), got: (#{row2}, #{col2})"
+            assert @tileGrid[row][col].room == endRoom, "pathfinding: search returned a wrong tile. Searched: (#{row}, #{col}), got: (#{row2}, #{col2})}\n#{lume.serialize(marked)}"
         else
             assert row == row2 and col == col2, "pathfinding: search returned a wrong tile. Searched: (#{row}, #{col}), got: (#{row2}, #{col2})"
         -- retrace path back using marks
         path = {}
         table.insert(path, {row, col})
         loopCounter = 0
-        while row ~= row1 and col ~= col1
+        while row ~= row1 or col ~= col1
             loopCounter += 1
             assert loopCounter <= @kBASE_SIZE * @kBASE_SIZE, "Pathfinding: infinite cycle in marks"
             assert @tileGrid[row][col] ~= nil
             {row, col} = marked[row][col]
             table.insert(path, {row, col})
         table.insert(path, {row1, col1})
+        --print "return path", lume.serialize(path)
         return path
 
 
