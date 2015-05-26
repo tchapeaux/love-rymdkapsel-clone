@@ -1,5 +1,6 @@
 export ^
 
+require "world/minions/missionstate"
 lume = require "lib/lume/lume"
 
 class AbstractMissionComponent
@@ -35,6 +36,16 @@ class AbstractMissionComponent
     update: (dt) =>
         for minion in *@minions
             minion\update(dt)
-            if not @has_mission(minion)
+            if @has_mission(minion) and #minion.path == 0
+                assert minion.missionState ~= nil
+                -- construct path for minion
+                minion_coord = minion\get_tile_coordinates()
+                print "construct new path (length of path is", #minion.path, ")"
+                minion.path = @spacebase\pathFinding minion_coord.x, minion_coord.y,
+                    minion.missionState.currentObjectiveTile[1],
+                    minion.missionState.currentObjectiveTile[2],
+                    true
+            else
                 -- try to find a mission
                 @giveMission(minion)
+

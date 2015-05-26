@@ -39,10 +39,12 @@ class EngineeringComponent extends AbstractMissionComponent
     giveMission: (minion) =>
         -- TODO: find closer reactor
         -- TODO: balance minions between reactors
-        for reactor in *@reactorTracker
+        rooms = @reactorTracker.roomList
+        for reactor in *rooms
             if @reactorToMinion[reactor] == nil
                 @reactorToMinion[reactor] = minion
-                minion.missionState = MinionMissionState(reactor.origin, false, @)
+                room_origin = {reactor.row, reactor.col}
+                minion.missionState = MinionMissionState(room_origin, false, @)
 
     getMinionCount: =>
         idleCount = #@idleMinions

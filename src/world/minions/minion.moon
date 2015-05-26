@@ -2,9 +2,10 @@ export ^
 
 require "world/tile"
 require "world/vector"
+lume = require "lib/lume/lume"
 
 class Minion
-    kSpeed: 100 -- px/s^2
+    kSpeed: 1 -- tile/s
     kMaxLife: 100
 
     new: (tile_x, tile_y) =>
@@ -15,7 +16,6 @@ class Minion
         @path = {}
         @idling = true
         @life = Minion.kMaxLife
-
 
     draw: =>
         width = 5
@@ -32,7 +32,6 @@ class Minion
             love.graphics.translate(width / 2, 0)
             item\draw()
 
-
     getItem: =>
         return @itemCarried
 
@@ -40,23 +39,44 @@ class Minion
         -- follow the path set by the MinionScheduler
         if @path and #@path > 0
             -- go towards next point/position in path
-            {next_x, next_y} = @path[1]
+            -- print "----"
+            -- print lume.serialize(@path), "length", #@path
+            {next_x, next_y} = @path[#@path]  -- last tile in path
             nextPosition = Vector(next_x, next_y)
-            distanceV = Vector(nextPosition.x - @x, nextPosition.y - @y)
+            currPosition = @get_tile_coordinates(false)
+            -- print currPosition.x, currPosition.y
+            -- print "to"
+            -- print nextPosition.x, nextPosition.y
+            distanceV = Vector(nextPosition.x - currPosition.x, nextPosition.y - currPosition.y)
+            -- print "distance", distanceV.x, distanceV.y
             assert distanceV.x == 0 or distanceV.y == 0
-            newPosition = Vector(@x, @y)
-            for coord in *{'x', 'y'}
-                distance = distanceV[coord]
-                if distance == 0
-                    direction = distance / math.abs(distance) -- 1 or -1
-                    newPosition[coord] += @kSpeed * dt
-                    newDistance = newPosition[coord] - nextPosition[coord]
-                    newDirection = newDistance / math.abs(newDistance)
-                    if direction ~= newDirection
-                        -- we went "too far": snap to desired position
-                        -- and pop the position in the path
-                        newPosition[coord] = nextPosition[coord]
-                        table.remove(@path, 1)
+            if distanceV\norm() > 0.01
+                -- go towards next tile in path
+                newPosition = Vector(currPosition.x, currPosition.y)
+                for coord in *{'x', 'y'}
+                    distance = distanceV[coord]
+                    if distance ~= 0
+                        oldDeltaCoord = nextPosition[coord] - newPosition[coord]
+                        oldDirection = oldDeltaCoord / math.abs(oldDeltaCoord) -- 1 or -1
+                        newPosition[coord] += oldDirection * @kSpeed * dt
+
+                        newDeltaCoord = nextPosition[coord] - newPosition[coord]
+                        newDirection = newDeltaCoord / math.abs(newDeltaCoord)
+                        if oldDirection ~= newDirection
+                            -- we went "too far": snap to desired position
+                            -- and pop the position in the path
+                            newPosition[coord] = nextPosition[coord]
+                @x = newPosition.x * Tile.kTILE_SIZE + 0.5 * Tile.kTILE_SIZE
+                @y = newPosition.y * Tile.kTILE_SIZE + 0.5 * Tile.kTILE_SIZE
+            else
+                -- next tile in path is reached: remove it
+                table.remove(@path)
         -- shooting
         if @itemCarried and @itemCarried.__class == Gun
             todo() -- TODO
+
+    get_tile_coordinates: (snap=true) =>
+        coord = Vector((@x / Tile.kTILE_SIZE) - 0.5, (@y / Tile.kTILE_SIZE) - 0.5)
+        if snap
+            coord = Vector(math.floor(coord.x), math.floor(coord.y))
+        return coord

@@ -35,7 +35,6 @@ class MinionScheduler
         new_minion = Minion(x, y)
         table.insert(@minions, new_minion)
         @components[@missionTypes.idle]\add(new_minion)
-        print "Minion created"
 
     assign: (fromMissionType, toMissionType) =>
         if @components[fromMissionType] == nil
@@ -52,6 +51,6 @@ class MinionScheduler
     get_all_minions: =>
         all_minions = {}
         for _, component in pairs(@components)
-            for minion in *component.minions
+            for minion in *component\getMinions()
                 table.insert(all_minions, minion)
         return all_minions

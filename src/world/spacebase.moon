@@ -203,7 +203,6 @@ class Spacebase
             assert @tileGrid[row][col] ~= nil
             {row, col} = marked[row][col]
             table.insert(path, {row, col})
-        table.insert(path, {row1, col1})
         --print "return path", lume.serialize(path)
         return path
 
