@@ -75,12 +75,12 @@ class RoomPlacer
 
     mousepressed: (x, y, button) =>
         switch button
-            when "l"
+            when 1
                 if @selectedRoomType ~= nil
                     @placeRoom()
                 for i, butt in ipairs(@roomButtons)
                     if butt\isInside(x, y)
                         @selectNewRoomType(i)
-            when "r"
+            when 2
                 @turnSelectedRoom()
 

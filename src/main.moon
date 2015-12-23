@@ -11,7 +11,7 @@ export helper = require "helper"
 export kDEBUG = false
 
 love.load = ->
-    assert love.graphics.isSupported("canvas", "npot"), "Your graphic card is not supported, sorry!"
+    -- assert love.graphics.getSupported()["npot"], "Your graphic card is not supported, sorry!"
     export game = Game()
 
 love.draw = ->
