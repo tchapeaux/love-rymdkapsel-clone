@@ -35,12 +35,13 @@ class AbstractMissionComponent
 
     update: (dt) =>
         for minion in *@minions
+            minion.idling = @has_mission(minion)
             minion\update(dt)
             if @has_mission(minion) and #minion.path == 0
                 assert minion.missionState ~= nil
                 -- construct path for minion
                 minion_coord = minion\get_tile_coordinates()
-                print "construct new path (length of path is", #minion.path, ")"
+                -- print "construct new path (length of path is", #minion.path, ")"
                 minion.path = @spacebase\pathFinding minion_coord.x, minion_coord.y,
                     minion.missionState.currentObjectiveTile[1],
                     minion.missionState.currentObjectiveTile[2],

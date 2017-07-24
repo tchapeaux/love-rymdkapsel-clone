@@ -1,5 +1,5 @@
 -- shapes description
--- each shape is an array of 4 coordinates (x,y), which are offset from the shape origin
+-- each shape is an array of block "coordinates" (x,y), which are offset from the shape origin
 
 dotShape = {
     {0, 0}

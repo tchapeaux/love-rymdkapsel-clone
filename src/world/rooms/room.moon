@@ -11,6 +11,7 @@ class Room
         finished: "finished"
     }
     color: {0, 0, 0} -- should be overridden by children classes
+    walkable: true
     name: "abstract"
     required_resources: {
         [Energy]: 0
@@ -53,14 +54,19 @@ class Room
         h = Tile.kTILE_SIZE
         m = Tile.kTILE_SIZE / 10 -- margin
         for tile in *@tiles
+            tile_outline = outline
+            tile_fillage = fillage
+            if tile == game.spacebase.tileBelowMouse
+                tile_outline = true
+
             offset_row = tile.row - @row
             offset_col = tile.col - @col
             x = offset_row * Tile.kTILE_SIZE
             y = offset_col * Tile.kTILE_SIZE
             love.graphics.setLineWidth(5)
             love.graphics.setColor(@color)
-            love.graphics.rectangle(fillage, x + m, y + m, w - 2 * m, h - 2 * m)
-            if outline
+            love.graphics.rectangle(tile_fillage, x + m, y + m, w - 2 * m, h - 2 * m)
+            if tile_outline
                 love.graphics.setColor(255, 255, 255, 100)
                 love.graphics.rectangle("line", x, y, w, h)
             if kDEBUG

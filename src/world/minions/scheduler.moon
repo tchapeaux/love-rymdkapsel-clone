@@ -20,7 +20,6 @@ class MinionScheduler
         -- defense: DefenseComponent.missionType
     }
     new: (@game) =>
-        @minions = {}
         @components = {}
         @components[@missionTypes.idle] = IdleComponent(@game.spacebase)
         @components[@missionTypes.engineering] = EngineeringComponent(@game.spacebase)
@@ -28,12 +27,9 @@ class MinionScheduler
         -- @components[@missionTypes.construction] = ConstructionComponent(@game.spacebase)
         -- @components[@missionTypes.research] = ResearchComponent(@game.spacebase)
         -- @components[@missionTypes.defense] = DefenseComponent(@game.spacebase)
-        for minion in *@minions
-            @assign(minion, @missionTypes.idle)
 
     create_minion: (x, y) =>
         new_minion = Minion(x, y)
-        table.insert(@minions, new_minion)
         @components[@missionTypes.idle]\add(new_minion)
 
     assign: (fromMissionType, toMissionType) =>
@@ -45,8 +41,9 @@ class MinionScheduler
         @components[toMissionType]\add(minion)
 
     update: (dt) =>
-        for name, component in pairs(@components)
-            component\update(dt)
+        -- DEBUG disable for debugging pathfinding
+        -- for name, component in pairs(@components)
+        --    component\update(dt)
 
     get_all_minions: =>
         all_minions = {}

@@ -7,5 +7,6 @@ class Tile
     kRIGHT: 3
     kDOWN: 4
     new: (@row, @col, @room) =>
+        @walkable = @room.walkable
         @neighbors = {nil, nil, nil, nil}
         @itemContained = nil

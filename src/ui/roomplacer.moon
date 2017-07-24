@@ -39,7 +39,6 @@ class RoomPlacer
         w, h = wScr(), hScr()
         love.graphics.setColor(0,0,0, 100)
         love.graphics.rectangle("fill", 0, 0, w, @hRatio * h)
-        love.graphics.rectangle("fill", 0, (1 - @hRatio) * h, w, @hRatio * h)
 
         -- buttons
         for i, butt in ipairs(@roomButtons)

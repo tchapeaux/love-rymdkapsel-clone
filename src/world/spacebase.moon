@@ -24,6 +24,7 @@ class Spacebase
         @rooms = {}
         @mousePosition = {0, 0} -- updated by external class
         @floatingRoom = nil
+        @tileBelowMouse = nil  -- DEBUG
 
         -- build the first rooms
         startupRooms = {}
@@ -61,6 +62,8 @@ class Spacebase
             @floatingRoom\updatePosition(wx, wy)
         for room in *@rooms
             room\update(dt)
+        {mouseTile_x, mouseTile_y} = @worldToTile(@mousePosition[1], @mousePosition[2])
+        @tileBelowMouse = @tileGrid[mouseTile_x][mouseTile_y]
 
     draw: =>
         tileSize = Tile.kTILE_SIZE
@@ -74,6 +77,7 @@ class Spacebase
                 love.graphics.line(i * tileSize, 0, i * tileSize, totalSize)
         for room in *@rooms
             @drawRoom(room)
+        @drawPath(game.debug_minion.path)
         if @floatingRoom
             @drawRoom(@floatingRoom)
         if kDEBUG
@@ -106,7 +110,7 @@ class Spacebase
             {row2, col2} = path[i + 1]
             {x, y} = @tileToWorld(row, col)
             {x2, y2} = @tileToWorld(row2, col2)
-            love.graphics.setColor(0, 0, 0)
+            love.graphics.setColor(255, 0, 0)
             love.graphics.line(x, y, x2, y2)
 
     placeFloatingRoom: =>
@@ -133,6 +137,16 @@ class Spacebase
         y = (j - 1) * Tile.kTILE_SIZE + 0.5 * Tile.kTILE_SIZE
         return {x, y}
 
+    isTile: (tile_x, tile_y, walkable_only=false) =>
+        -- Return True if (tile_x, tile_y is occupied by a tile)
+        -- if walkable is true, return True only for walkable tiles
+        tile = @tileGrid[tile_x][tile_y]
+        if tile == nil
+            return false
+        if walkable_only
+            return tile.walkable
+        return true
+
     getItems: () =>
         items = {}
         for room in *@rooms
@@ -158,6 +172,9 @@ class Spacebase
     pathFinding: (row1, col1, row2, col2, acceptSameRoom=false) =>
         -- Return a path (as a table of {row, col} coordinate) between two tiles
         -- Currently use Breadth-First Search (TODO: improve efficiency?)
+        -- ie we iterate over a tile_queue, adding the neighbor of each tile to
+        -- the queue and skipping over marked (already visited) ones, until we
+        -- reach the end tile
         -- @param row1, col1: start tile of path
         -- @param row2, col2: end tile of path
         -- @param acceptSameRoom: if true, may return a path not ending at the end tile, but in the same room

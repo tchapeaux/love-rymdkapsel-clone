@@ -48,13 +48,17 @@ class GameView
 
     draw: =>
         @draw_starfield()
+
         love.graphics.scale(1, 1 / @squishFactor)
         -- draw spacebase (rotated and squished)
         @cam\draw(@spacebase\draw)
-        -- draw entities (minions and items) (un-rotated and un-squished)
-        love.graphics.scale(1, @squishFactor)
 
-        for minion in *@game.minionscheduler\get_all_minions()
+        -- draw entities (minions and items) (un-rotated and un-squished)
+        -- minions
+        love.graphics.scale(1, @squishFactor)
+        all_minions = @game.minionscheduler\get_all_minions()
+        table.insert(all_minions, @game.debug_minion)
+        for minion in *all_minions
             sx, sy = @cam\toScreen(minion.x, minion.y)
             sy /= @squishFactor
             love.graphics.push()
@@ -62,8 +66,12 @@ class GameView
             love.graphics.scale(scale, scale)
             love.graphics.translate(sx / scale, sy / scale)
             minion\draw()
+            if kDEBUG
+                love.graphics.setColor(0, 255, 0)
+                minion_coord = minion\get_tile_coordinates()
+                love.graphics.printf("#{minion_coord.x}, #{minion_coord.y}", 0, 0, 100, "center")
             love.graphics.pop()
-
+        -- items
         for room in *@spacebase.rooms
             for tile in *room.tiles
                 item = tile.itemContained
@@ -105,6 +113,6 @@ class GameView
 
     keyreleased: (key) =>
 
-    coordinatesInWorld: (x, y) =>
-        world_x, world_y = @cam\toWorld(x, @squishFactor * y)
+    screenCoordinateToWorld: (screen_x, screen_y) =>
+        world_x, world_y = @cam\toWorld(screen_x, @squishFactor * screen_y)
         return {world_x, world_y}
