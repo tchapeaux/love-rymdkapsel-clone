@@ -1,6 +1,7 @@
 REM Suppose the `love` and `moon` executables are in the PATH
 
-if not exist gen_love mkdir gen_love
+if exist gen_love DEL /F /Q gen_love
+if not exist gen_love MKDIR gen_love
 
 set need_lib=0
 
@@ -16,7 +17,6 @@ if %need_lib% EQU 1 (
 )
 
 if exist "res" (
-    echo "hi mom"
     if not exist "gen_love\res" mkdir gen_love\res
     xcopy .\res .\gen_love\res /E /Y
 )
