@@ -1,5 +1,6 @@
 {
     makeWeakTable: (table, key=true, value=true) ->
+        -- see http://lua-users.org/wiki/WeakTablesTutorial
         meta = getmetatable(table)
         if meta == nil
             meta = {}
