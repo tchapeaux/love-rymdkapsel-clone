@@ -11,7 +11,7 @@ class Game
         @view = GameView(@)
         @minionscheduler = MinionScheduler(@)
         @minionscheduler\create_minion(@spacebase.kBASE_SIZE / 2 - 1, @spacebase.kBASE_SIZE / 2)
-        @minionscheduler\assign(@minionscheduler.missionTypes.idle, @minionscheduler.missionTypes.engineering)
+        @minionscheduler\assign("idle", "engineering")
         @ui = UI(@)
         @debug_minion = Minion(@spacebase.kBASE_SIZE / 2 - 1, @spacebase.kBASE_SIZE / 2)
 
@@ -37,9 +37,9 @@ class Game
     mousepressed: (x, y, button) =>
         @ui\mousepressed(x, y, button)
 
+        -- DEBUG MINION path
         if @spacebase.floatingRoom == nil
             if not @ui\isScreenPosInUI(x, y)
-                -- set path of debug minion
                 {world_x, world_y} = @view\screenCoordinateToWorld(x, y)
                 {tile_x, tile_y} = @spacebase\worldToTile(world_x, world_y)
                 if @spacebase\isTile(tile_x, tile_y)
@@ -49,3 +49,6 @@ class Game
                         tile_x,
                         tile_y,
                         false
+
+    mousereleased: (x, y, button) =>
+        @ui\mousereleased(x, y, button)

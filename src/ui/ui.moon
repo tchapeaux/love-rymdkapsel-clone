@@ -6,7 +6,7 @@ require "ui/minionschedulerui"
 class UI
     new: (@game) =>
         @roomPlacer = RoomPlacer(@game.spacebase)
-        @minionScheduler = MinionSchedulerUI(@game.spacebase.minionscheduler)
+        @minionScheduler = MinionSchedulerUI(@game.minionscheduler)
 
     draw: =>
         @roomPlacer\draw()
@@ -19,3 +19,7 @@ class UI
     mousepressed: (x, y, button) =>
         @roomPlacer\mousepressed(x, y, button)
         @minionScheduler\mousepressed(x, y, button)
+
+    mousereleased: (x, y, button) =>
+        @minionScheduler\mousereleased(x, y, button)
+

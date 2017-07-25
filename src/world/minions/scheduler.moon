@@ -11,26 +11,23 @@ require "world/minions/dummy_engineeringcomponent"
 
 class MinionScheduler
     -- Set minion targets at each frame
-    missionTypes: {
-        idle: IdleComponent.missionType
-        engineering: EngineeringComponent.missionType
-        -- foodservice: FoodServiceComponent.missionType
-        -- construction: ConstructionComponent.missionType
-        -- research: ResearchComponent.missionType
-        -- defense: DefenseComponent.missionType
+    missionComponents: {
+        IdleComponent,
+        EngineeringComponent,
+        FoodServiceComponent,
+        ConstructionComponent,
+        ResearchComponent,
+        DefenseComponent
     }
+
     new: (@game) =>
         @components = {}
-        @components[@missionTypes.idle] = IdleComponent(@game.spacebase)
-        @components[@missionTypes.engineering] = EngineeringComponent(@game.spacebase)
-        -- @components[@missionTypes.foodservice] = FoodServiceComponent(@game.spacebase)
-        -- @components[@missionTypes.construction] = ConstructionComponent(@game.spacebase)
-        -- @components[@missionTypes.research] = ResearchComponent(@game.spacebase)
-        -- @components[@missionTypes.defense] = DefenseComponent(@game.spacebase)
+        for comp in *@missionComponents
+            @components[comp.missionType] = comp(@game.spacebase)
 
     create_minion: (x, y) =>
         new_minion = Minion(x, y)
-        @components[@missionTypes.idle]\add(new_minion)
+        @components[IdleComponent.missionType]\add(new_minion)
 
     assign: (fromMissionType, toMissionType) =>
         if @components[fromMissionType] == nil
@@ -38,12 +35,14 @@ class MinionScheduler
         if @components[toMissionType] == nil
             error("Call scheduler\\assign with unknown mission type #{toMissionType}")
         minion = @components[fromMissionType]\pop()
+        assert minion ~= nil
+        minion.missionState = nil
+        minion.path = {}
         @components[toMissionType]\add(minion)
 
     update: (dt) =>
-        -- DEBUG disable for debugging pathfinding
-        -- for name, component in pairs(@components)
-        --    component\update(dt)
+        for name, component in pairs(@components)
+            component\update(dt)
 
     get_all_minions: =>
         all_minions = {}

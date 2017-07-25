@@ -11,58 +11,62 @@ class EngineeringComponent extends AbstractMissionComponent
     new: (spacebase) =>
         super(spacebase)
         @reactorTracker = RoomTracker(@spacebase, Reactor)
-        @reactorToMinion = {} -- key: reactor; value: minion
-        helper.makeWeakTable(@reactorToMinion)
+        @reactorToMinions = {} -- key: reactor; value: list of minions
+        helper.makeWeakTable(@reactorToMinions)
 
     update: (dt) =>
-        @reactorTracker\update(dt)
         super(dt)
+        @reactorTracker\update(dt)
+        for room in *@reactorTracker.roomsAdded
+            @reactorToMinions[room] = {}
+            helper.makeWeakTable(@reactorToMinions[room])
+        for room in *@reactorTracker.roomsRemoved
+            @reactorToMinions[room] = nil
 
     pop: =>
-        if #@idleMinions > 0
+        if #@minions == 0
+            print("WARN -- Popping a minion from an empty component")
+            return nil
+
+        idle_minions = @getIdleMinions()
+        popped_minion = nil
+        if #idle_minions > 0
             -- if some minions are idle: pop one of them
-            return table.remove(@idleMinions)
+            popped_minion = table.remove(idle_minions)
         else
             -- if all minions are busy: pop one at random
             -- TODO: prioritize minions not carrying items
-            for reactor, minion in pairs(@reactorToMinion)
-                -- we arbitrarily return the first minion
-                @reactorToMinion[reactor] = nil
-                return minion
+            popped_minion = table.remove(@minions)
+
+        -- cleanup
+        @minions = lume.filter(@minions, (m) -> m ~= popped_minion)
+        for reactor, minion in pairs(@reactorToMinions)
+            @reactorToMinions[reactor] = lume.filter(@reactorToMinions[reactor], (m) -> m ~= popped_minion)
+        print "removed minion bis", popped_minion
+        return popped_minion
 
     has_mission: (minion) =>
-        for reactor, busyminion in pairs(@reactorToMinion)
-            if busyminion == minion
-                return true
+        for reactor, minions in pairs(@reactorToMinions)
+            for m in *minions
+                if m == minion
+                    return true
         return false
 
     giveMission: (minion) =>
         -- TODO: find closer reactor
         -- TODO: balance minions between reactors
-        rooms = @reactorTracker.roomList
-        for reactor in *rooms
-            if @reactorToMinion[reactor] == nil
-                @reactorToMinion[reactor] = minion
-                room_origin = {reactor.row, reactor.col}
-                minion.missionState = MinionMissionState(room_origin, false, @)
+        -- for now --> choose a random reactor
+        reactors = @reactorTracker.roomList
+        if #reactors > 0
+            random_idx = love.math.random(#reactors)
+            reactor = reactors[random_idx]
+            table.insert(@reactorToMinions[reactor], minion)
+            room_origin = {reactor.row, reactor.col}
+            minion.missionState = MinionMissionState(room_origin, false, @)
 
     getMinionCount: =>
         idleCount = #@idleMinions
         busyCount = 0
-        for room, minion in @reactorToMinion
-            busyCount += 1
-
-    updateReactorRooms: =>
-        -- add new reactors
-        for room in *@spacebase.rooms
-            if room.__class == Reactor
-                if lume.find(@reactorRoomList, room) == nil
-                    table.insert(@reactorRoomList, room)
-        -- remove deleted reactors
-        index_to_remove = {}
-        for index, reactor in *@reactorRoomList
-            if lume.find(@spacebase.rooms, reactor) == nil
-                table.insert(index_to_remove, index)
-        for index in *index_to_remove
-            reactor = table.remove(@reactorRoomList, index)
-            @reactorToMinion[reactor] = nil
+        for room, minions in @reactorToMinions
+            busyCount += #minions
+        return idleCount + busyCount

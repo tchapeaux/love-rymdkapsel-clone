@@ -10,6 +10,8 @@ export helper = require "helper"
 
 export kDEBUG = false
 
+--collectgarbage("stop") -- DEBUG DEBUG REMOVE ME
+
 love.load = ->
     -- assert love.graphics.getSupported()["npot"], "Your graphic card is not supported, sorry!"
     export game = Game()
@@ -31,3 +33,6 @@ love.keyreleased = (key) ->
 
 love.mousepressed = (x, y, button) ->
     game\mousepressed(x, y, button)
+
+love.mousereleased = (x, y, button) ->
+    game\mousereleased(x, y, button)
