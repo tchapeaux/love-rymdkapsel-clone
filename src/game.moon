@@ -43,11 +43,13 @@ class Game
                 {tile_x, tile_y} = @spacebase\worldToTile(world_x, world_y)
                 if @spacebase\isTile(tile_x, tile_y)
                     minion_coord = @debug_minion\get_tile_coordinates()
-                    -- print "construct new path (length of path is", #minion.path, ")"
-                    @debug_minion.path = @spacebase\pathFinding minion_coord.x, minion_coord.y,
+                    path = @spacebase\pathFinding minion_coord.x,
+                        minion_coord.y,
                         tile_x,
                         tile_y,
                         false
+                    if path
+                        @debug_minion.path = path
 
     mousereleased: (x, y, button) =>
         @ui\mousereleased(x, y, button)
