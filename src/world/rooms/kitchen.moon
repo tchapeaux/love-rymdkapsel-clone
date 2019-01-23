@@ -4,7 +4,7 @@ require "world/items"
 require "world/rooms/abstract_producer"
 
 class Kitchen extends Producer
-    color: {224, 161, 28}
+    color: {224 / 255, 161 / 255, 28 / 255}
     name: "kitchen"
     required_resources: {
         [Energy]: 3

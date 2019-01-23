@@ -70,7 +70,7 @@ class Spacebase
         totalSize = Spacebase.totalSize()
         if kDEBUG -- show grid
             for i=1, @kBASE_SIZE + 1
-                love.graphics.setColor(255, 255, 255, 150)
+                love.graphics.setColor(1, 1, 1, 150 / 255)
                 love.graphics.setLineWidth(1)
                 i -= 1 -- begins at 0
                 love.graphics.line(0, i * tileSize, totalSize, i * tileSize)
@@ -83,7 +83,7 @@ class Spacebase
         if kDEBUG
             -- display neighbours
             love.graphics.setLineWidth(2)
-            love.graphics.setColor({50,50,50})
+            love.graphics.setColor({50 / 255, 50 / 255, 50 / 255})
             neighbors = {Tile.kRIGHT, Tile.kLEFT, Tile.kUP, Tile.kDOWN}
             for i=1,@kBASE_SIZE
                 for j=1,@kBASE_SIZE
@@ -110,7 +110,7 @@ class Spacebase
             {row2, col2} = path[i + 1]
             {x, y} = @tileToWorld(row, col)
             {x2, y2} = @tileToWorld(row2, col2)
-            love.graphics.setColor(255, 0, 0)
+            love.graphics.setColor(1, 0, 0)
             love.graphics.line(x, y, x2, y2)
 
     placeFloatingRoom: =>

@@ -11,19 +11,19 @@ class Item
         love.graphics.rectangle("line", -5, -5, 10, 10)
 
 class Energy extends Item
-    color: {66, 145, 135}
+    color: {66 / 255, 145 / 255, 135 / 255}
 
 class Material extends Item
-    color: {243, 127, 183}
+    color: {243 / 255, 127 / 255, 183 / 255}
 
 class Sludge extends Item
-    color: {87, 119, 32}
+    color: {87 / 255, 119 / 255, 32 / 255}
 
 class Food extends Item
-    color: {159, 112, 19}
+    color: {159 / 255, 112 / 255, 19 / 255}
 
 class Gun extends Item
     color: {0, 0, 0}
 
 class ResearchEquipment extends Item
-    color: {255, 255, 255}
+    color: {1, 1, 1}

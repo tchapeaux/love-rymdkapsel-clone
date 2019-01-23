@@ -67,7 +67,7 @@ class GameView
             love.graphics.translate(sx / scale, sy / scale)
             minion\draw()
             if kDEBUG
-                love.graphics.setColor(0, 255, 0)
+                love.graphics.setColor(0, 1, 0)
                 minion_coord = minion\get_tile_coordinates()
                 love.graphics.printf("#{minion_coord.x}, #{minion_coord.y}", 0, 0, 100, "center")
             love.graphics.pop()
@@ -87,7 +87,7 @@ class GameView
                     love.graphics.pop()
 
     draw_starfield: =>
-        spaceColor = {14, 17, 23}
+        spaceColor = {14 / 255, 17 / 255, 23 / 255}
         w_x, w_y = @cam\toScreen(0, 0)
         love.graphics.setColor(spaceColor)
         love.graphics.rectangle("fill", 0, 0, wScr(), hScr())
@@ -107,7 +107,7 @@ class GameView
     --     -- love.graphics.scale(1, 0.5)
     --     -- love.graphics.rotate(math.pi/4 + @rotation)
     --     -- love.graphics.circle("fill", 0, 0, 10)
-    --     love.graphics.setColor(255, 255, 255)
+    --     love.graphics.setColor(255 / 255, 255 / 255, 255 / 255)
     --     love.graphics.draw(@canvas, -@size / (2 * @zoom), -@size / (2 * @zoom))
 
 

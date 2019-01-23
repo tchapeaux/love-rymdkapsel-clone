@@ -3,7 +3,7 @@ export ^
 require "world/minions/minion"
 require "world/minions/idlecomponent"
 require "world/minions/engineeringcomponent"
-require "world/minions/dummy_engineeringcomponent"
+-- require "world/minions/dummy_engineeringcomponent"
 -- require "world/minions/foodservicecomponent"
 -- require "world/minions/constructioncomponent"
 -- require "world/minions/researchcomponent"

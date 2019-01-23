@@ -13,7 +13,6 @@ export kDEBUG = false
 --collectgarbage("stop") -- DEBUG DEBUG REMOVE ME
 
 love.load = ->
-    -- assert love.graphics.getSupported()["npot"], "Your graphic card is not supported, sorry!"
     export game = Game()
 
 love.draw = ->

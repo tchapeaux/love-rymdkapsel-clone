@@ -4,7 +4,7 @@ require "world/items"
 require "world/rooms/abstract_producer"
 
 class Extractor extends Producer
-    color: {181, 83, 131}
+    color: {181 / 255, 83 / 255, 131 / 255}
     name: "extractor"
     required_resources: {
         [Energy]: 2

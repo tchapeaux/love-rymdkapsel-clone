@@ -10,7 +10,7 @@ class Button
         love.graphics.setColor(@color)
         love.graphics.printf(@text, @x, @y + @h / 2, @w, "center")
         if is_selected
-            love.graphics.setColor(100, 100, 120, 50)
+            love.graphics.setColor(100 / 255, 100 / 255, 120 / 255, 50 / 255)
             love.graphics.rectangle("fill", @x, @y, @w, @h)
 
     isInside: (x, y) =>

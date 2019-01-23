@@ -3,7 +3,7 @@ export ^
 require "world/rooms/room"
 
 class Rock extends Room
-    color: {59, 62, 67}
+    color: {59 / 255, 62 / 255, 67 / 255}
     name: "rock"
     walkable: false
     required_resources: {

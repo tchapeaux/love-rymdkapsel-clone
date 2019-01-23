@@ -20,7 +20,7 @@ class Minion
     draw: =>
         width = 5
         height = 20
-        love.graphics.setColor(255, 255, 255)
+        love.graphics.setColor(1, 1, 1)
 
         if @idling
             -- guy lying down: width and height are reversed

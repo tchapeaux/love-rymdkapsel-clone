@@ -67,10 +67,10 @@ class Room
             love.graphics.setColor(@color)
             love.graphics.rectangle(tile_fillage, x + m, y + m, w - 2 * m, h - 2 * m)
             if tile_outline
-                love.graphics.setColor(255, 255, 255, 100)
+                love.graphics.setColor(1, 1, 1, 100 / 255)
                 love.graphics.rectangle("line", x, y, w, h)
             if kDEBUG
-                love.graphics.setColor(255, 255, 255)
+                love.graphics.setColor(1, 1, 1)
                 love.graphics.printf("#{tile.row}, #{tile.col}", x, y, w, "center")
         -- construction bars
         if @state == @states.construction
@@ -83,7 +83,7 @@ class Room
                 y = 2 * tSize / 7
                 love.graphics.setColor(res.color)
                 love.graphics.rectangle("fill", x, y, w, h)
-                love.graphics.setColor(0, 0, 0, 100)
+                love.graphics.setColor(0, 0, 0, 100 / 255)
                 cur = @current_resources[res]
                 req = @required_resources[res]
                 completionFactor = cur / req

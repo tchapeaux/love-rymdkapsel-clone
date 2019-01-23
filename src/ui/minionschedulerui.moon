@@ -4,7 +4,7 @@ lume = require "lib/lume/lume"
 
 require "world/minions/idlecomponent"
 require "world/minions/engineeringcomponent"
-require "world/minions/dummy_engineeringcomponent"
+-- require "world/minions/dummy_engineeringcomponent"
 -- require "world/minions/foodservicecomponent"
 -- require "world/minions/constructioncomponent"
 -- require "world/minions/researchcomponent"
@@ -35,7 +35,7 @@ class MinionSchedulerUI
 
     draw: =>
         w, h = wScr(), hScr()
-        love.graphics.setColor(0,0,0,150)
+        love.graphics.setColor(0,0,0,150 / 255)
         love.graphics.rectangle("fill", 0, (1 - @hRatio) * h, w, @hRatio * h)
 
         -- buttons
@@ -43,7 +43,7 @@ class MinionSchedulerUI
             selected = (i == @selectedMissionType)
             butt\draw(selected)
             -- display corresponding number of minions
-            love.graphics.setColor(255,255,255,255)
+            love.graphics.setColor(1,1,1,1)
             comp_type = @scheduler.missionComponents[i].missionType
             comp = @scheduler.components[comp_type]
             nb_minions = #comp\getMinions()

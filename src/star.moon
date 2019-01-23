@@ -7,8 +7,8 @@ class Star
         @parallaxFactor = love.math.randomNormal(0.5, 0.5) / 20
         @width = math.ceil(@parallaxFactor * 20 + (math.random(3) - 1))
         @height = math.random(4)
-        color_blue = love.math.randomNormal(30, 0)
-        @color = {100, 100, 100 + color_blue, 230}
+        color_blue = love.math.randomNormal(30, 0) / 255
+        @color = {100 / 255, 100 / 255, 100 / 255 + color_blue, 230 / 255}
 
     draw: (o_x, o_y) =>
         love.graphics.setColor(@color)

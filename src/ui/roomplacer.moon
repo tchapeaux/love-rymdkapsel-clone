@@ -37,7 +37,7 @@ class RoomPlacer
 
     draw: =>
         w, h = wScr(), hScr()
-        love.graphics.setColor(0,0,0, 100)
+        love.graphics.setColor(0,0,0, 100 / 255)
         love.graphics.rectangle("fill", 0, 0, w, @hRatio * h)
 
         -- buttons

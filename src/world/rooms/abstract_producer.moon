@@ -58,8 +58,8 @@ class Producer extends Room
                 if (kDEBUG)
                     love.graphics.setColor(0,0,0)
                     love.graphics.printf("#{@productionCounter}", 2 * x, y, tSize)
-                love.graphics.setColor(0, 0, 0, 100)
+                love.graphics.setColor(0, 0, 0, 100 / 255)
                 love.graphics.rectangle("fill", x, y, w, h)
-                love.graphics.setColor(255, 255, 255)
+                love.graphics.setColor(1, 1, 1)
                 loadingFactor = @productionCounter / @productionRate
                 love.graphics.rectangle("fill", x, y, w, h * loadingFactor)

@@ -11,7 +11,6 @@ class Game
         @view = GameView(@)
         @minionscheduler = MinionScheduler(@)
         @minionscheduler\create_minion(@spacebase.kBASE_SIZE / 2 - 1, @spacebase.kBASE_SIZE / 2)
-        @minionscheduler\assign("idle", "engineering")
         @ui = UI(@)
         @debug_minion = Minion(@spacebase.kBASE_SIZE / 2 - 1, @spacebase.kBASE_SIZE / 2)
 
